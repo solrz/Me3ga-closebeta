@@ -1,0 +1,27 @@
+{
+  "cwd": "/Users/kjc/WebstormProjects/make-e3-great-again",
+  "type": [
+    "pwa",
+    "web"
+  ],
+  "name": "make-E3-great-again",
+  "framework": "svelte",
+  "template": "tabs",
+  "cssPreProcessor": "stylus",
+  "bundler": "webpack",
+  "webpack": {
+    "developmentSourceMap": true,
+    "productionSourceMap": true,
+    "hashAssets": false,
+    "preserveAssetsPaths": false,
+    "inlineAssets": true
+  },
+  "theming": {
+    "customColor": true,
+    "color": "#98a8d7",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false
+  },
+  "customBuild": false
+}
