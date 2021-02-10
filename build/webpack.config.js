@@ -74,6 +74,9 @@ module.exports = {
           loader: 'svelte-loader',
           options: {
             emitCss: true,
+            preprocess: require('svelte-preprocess')({
+              preprocess: [require('pug')]
+            })
           },
         },
       },
