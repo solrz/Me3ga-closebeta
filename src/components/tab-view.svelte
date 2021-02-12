@@ -3,9 +3,9 @@
   <Views tabs class="safe-areas">
     <!-- Tabbar for switching views-tabs -->
     <Toolbar tabbar labels bottom>
-      <Link tabLink="#view-today" iconIos="f7:square_list_fill" iconAurora="f7:square_list_fill"
+      <Link tabLinkActive tabLink="#view-today" iconIos="f7:square_list_fill" iconAurora="f7:square_list_fill"
             iconMd="material:view_list" text="今日"/>
-      <Link tabLinkActive tabLink="#view-timetable" iconIos="f7:gear" iconAurora="f7:gear" iconMd="material:settings"
+      <Link  tabLink="#view-timetable" iconIos="f7:gear" iconAurora="f7:gear" iconMd="material:settings"
             text="課表"/>
       <Link tabLink="#view-aboutme" iconIos="f7:person_alt_circle" iconAurora="f7:person_alt_circle"
             iconMd="material:person" text="關於我"/>
@@ -13,10 +13,10 @@
 
 
     <!-- Catalog View -->
-    <View id="view-today" name="catalog" tab url="/today/"/>
+    <View id="view-today" name="catalog" tab tabActive url="/today/"/>
 
     <!-- Settings View -->
-    <View id="view-timetable" name="settings" tab tabActive url="/timetable/"/>
+    <View id="view-timetable" name="settings" tab url="/timetable/"/>
 
     <!-- Your main view/tab, should have "view-main" class. It also has "tabActive" prop -->
     <View id="view-aboutme" main tab url="/aboutme/"/>

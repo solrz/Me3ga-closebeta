@@ -2,7 +2,6 @@
   Page(name="timetable-page")
     Navbar(title="課表")
       a(slot="right") 設定
-    .data-table
     table(width="{tableWidthString}" style="table-layout: fixed")
       thead.text-align-center
         tr
