@@ -8,6 +8,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
+const sveltePreprocess = require('svelte-preprocess');
 
 function resolvePath(dir) {
   return path.join(__dirname, '..', dir);
@@ -15,7 +16,7 @@ function resolvePath(dir) {
 
 const env = process.env.NODE_ENV || 'development';
 const target = process.env.TARGET || 'web';
-
+const production = env === 'production';
 
 
 module.exports = {
@@ -27,7 +28,7 @@ module.exports = {
   output: {
     path: resolvePath('www'),
     filename: 'js/[name].js',
-    chunkFilename: 'js/[name].js',
+    chunkFilename: 'js/[name].[id].js',
     publicPath: '',
     hotUpdateChunkFilename: 'hot/hot-update.js',
     hotUpdateMainFilename: 'hot/hot-update.json',
@@ -42,7 +43,7 @@ module.exports = {
   devtool: env === 'production' ? 'source-map' : 'eval',
   devServer: {
     hot: true,
-    open: true,
+    open: false,
     compress: true,
     contentBase: '/www/',
     disableHostCheck: true,
@@ -74,10 +75,20 @@ module.exports = {
           loader: 'svelte-loader',
           options: {
             emitCss: true,
-            preprocess: require('svelte-preprocess')({
-              preprocess: [require('pug')]
-            })
-          },
+            // hotReload: true,
+            preprocess: sveltePreprocess({
+              // https://github.com/kaisermann/svelte-preprocess/#user-content-options
+              sourceMap: !production,
+              pug: {},
+              postcss: {
+                plugins: [
+                  require("tailwindcss"),
+                  // require("autoprefixer"),
+                  require("postcss-nesting")
+                ],
+              },
+            }),
+          }
         },
       },
 

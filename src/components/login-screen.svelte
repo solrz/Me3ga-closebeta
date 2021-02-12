@@ -10,7 +10,10 @@
       ListInput(type='password' placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
       Button(fill onClick="{login}")
         h3 登入
-    BlockFooter 透過MEGA，你可以在手機電腦上享受最新的App設計，免重新登入，從此拋開難用的NewE3。
+    BlockFooter
+    | 由NiceCourseToU團隊精心打造。
+    | 透過MEGA，你可以在手機上使用App存取。
+    | 無須重新登入，從此拋開難用的NewE3。
 </template>
 <script>
 import {onMount} from 'svelte';
@@ -78,7 +81,11 @@ function _getUserInfo(studentID) {
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify(getUserInfoForm)).then(function (resp) {
     if (!resp.data.error) {
       const e3ID = resp.data[0].id
-      newe3Config.e3ID = e3ID
+      const dep = resp.data[0].department;
+      const realname = resp.data[0].fullname.replace(dep+' ', '');
+      $newe3Config.e3ID = e3ID
+      $newe3Config.dep = dep
+      $newe3Config.realname = realname
       console.log('Got E3ID')
       f7.dialog.alert('登入成功', () => {
         f7.loginScreen.close();
