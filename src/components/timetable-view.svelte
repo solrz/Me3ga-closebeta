@@ -6,12 +6,12 @@
       tr
         th.w-4
         +each('showingWeekdays as d')
-          th(width="{tableWidthString}")
+          th(width="{tableWidthString}").sticky.top-0.z-50.bg-gray-100
             h4 {d}
     tbody
       +each('timeslotShort as s')
-        tr(class="{'z24579bd'.includes(s) ? 'bg-gray-100' : 'bg-gray-50'}").h-12
-          td.w-4
+        tr(class="{'z24579bd'.includes(s) ? 'bg-gray-200' : 'bg-gray-50'}").h-12
+          td.w-4.sticky.left-0.z-40.bg-gray-100.text-align-center
             h4 {s}
           +each('weekdaysShort as d')
             +if('coursesOnTable[d+s]')

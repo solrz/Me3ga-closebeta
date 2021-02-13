@@ -1,9 +1,8 @@
 <template lang="pug">
-
-  List.h-60.overflow-y-scroll
-    +each('announcements as a')
-      ListItem
-        h3 {a.name}
+  List.overflow-y-scroll(class="h-1/4")
+      +each('announcements as a')
+        ListItem
+          h3 {a.name}
 
 </template>
 <script>

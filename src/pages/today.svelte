@@ -2,14 +2,15 @@
   Page(name="today-page")
     Navbar(title="今日")
 
-    BlockTitle 本日課程
-    OneDayCoursesGantt
+    .h-full.overflow-y-hidden
+      BlockTitle 本日課程
+      OneDayCoursesGantt
 
-    BlockTitle 近期作業
-    HomeworkGantt
+      BlockTitle 近期作業
+      HomeworkGantt
 
-    BlockTitle 近期公告
-    AnnouncementList
+      BlockTitle 近期公告
+      AnnouncementList
 
 </template>
 <script>

@@ -1,7 +1,7 @@
 <template lang="pug">
-  Block.overflow-x-scroll
+  .overflow-x-scroll.overflow-y-hidden.h-24
     table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-x-auto
-      thead.text-align-center.bg-gray-100
+      thead.text-align-left.bg-gray-100.sticky
         tr
           +each('timeslotShort as s')
             th(width="{tableWidthString}")

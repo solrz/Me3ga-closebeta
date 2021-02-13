@@ -1,10 +1,10 @@
 <template lang="pug">
-  .h-60.overflow-y-scroll.overflow-x-hidden
+  .overflow-y-scroll.overflow-x-hidden(class="h-1/4")
     table(width="{tableWidthString}" style="table-layout: fixed").rounded
-      thead.text-align-center.bg-gray-100
-        tr
+      thead.text-align-left
+        tr.bg-gray-100
           +each('dates as s')
-            th(width="{tableWidthString}")
+            th(width="{tableWidthString}").sticky.top-0.bg-gray-100
               h4 {s}
       tbody
         +each('homeworks as h')
