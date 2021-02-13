@@ -11,12 +11,9 @@
           +each('timeslotShort as s')
             +if('coursesOnTable[d+s]')
               td(colspan="{coursesOnTable[d+s].last}" width="`${colWidth*coursesOnTable[d+s].last}`px")
-                Card.m-1.h-16
-                  CardContent(padding="{false}" )
-                    .bg-gradient-to-br.from-red-500.to-purple-200.h-16
-                      CardHeader.display-block.truncate
-                        p.text-sm {coursesOnTable[d+s].name}
-                        p.font-mono.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}:{coursesOnTable[d+s].at??''}
+                .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200.truncate
+                  p.text-sm {coursesOnTable[d+s].name}
+                  p.font-mono.text-sm.opacity-70 {coursesOnTable[d+s].at??''}:{d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}
 
             +if('!coursesOccupied.includes(d+s)')
               td(width="{tableWidthString}").h-16.bg-gray-50

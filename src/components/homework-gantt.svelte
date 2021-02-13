@@ -8,14 +8,11 @@
               h4 {s}
       tbody
         +each('homeworks as h')
-          tr
-            td(colspan="4" width="`${colWidth*4}`px")
-              Card.m-1.h-12.z-50
-                CardContent(padding="{false}" )
-                  .bg-gradient-to-br.from-red-500.to-purple-200
-                    CardHeader.display-block.truncate
-                      p.text-sm {h.name}
-                      p.text-sm -{h.courseName}
+          tr.overflow-x-visible.overflow-y-hidden.truncate
+            td(colspan="{new Date().getDate() - h.dueDate.date}")
+              .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200
+                p.text-sm.font-bold {h.name} ({new Date().getDate() - h.dueDate.date}D)
+                p.text-xs -{h.courseName}
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
