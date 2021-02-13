@@ -25,8 +25,9 @@ import {onMount} from "svelte";
 import {newe3Config} from '../js/store/e3.js';
 
 
-const dates = [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-const colWidth = 60
+var dates = []
+const today = new Date()
+const colWidth = 40
 const tableWidthString = `${colWidth}px`
 
 let coursesID = []
@@ -35,6 +36,9 @@ let homeworks = []
 let expanded = false
 
 async function getCourses() {
+  for (const offset of [...Array(20).keys()]) {
+    dates = dates.concat(new Date(today.getTime() + 86400 * 1000 * offset).getDate())
+  }
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
     wstoken: $newe3Config.token,
     wsfunction: 'core_enrol_get_users_courses',
@@ -59,8 +63,17 @@ async function getHomeworks() {
   })).then(function (resp) {
     if (!resp.data.error) {
       const courses = resp.data.courses
-      courses.forEach(function (c){
-        homeworks = homeworks.concat(c.assignments.map(a => ({...a, courseName:c.fullname})))
+      courses.forEach(function (c) {
+        homeworks = homeworks.concat(
+            c.assignments.map(a => ({
+              ...a,
+              courseName: c.fullname.replace(c.shortname+'.','').split(' ')[0],
+              dueDate: {
+                date: new Date(a.duedate * 1000 - 1).getDate(),
+                hour: new Date(a.duedate * 1000 - 1).getHours(),
+              }
+            }))
+        )
       })
       console.log(JSON.stringify(resp.data))
     } else {
@@ -71,13 +84,6 @@ async function getHomeworks() {
 
 }
 
-function onExpand(){
-  expanded = true
-}
-
-function onClose(){
-  expanded = false
-}
 onMount(getCourses)
 
 </script>
