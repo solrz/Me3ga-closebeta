@@ -1,7 +1,7 @@
 <!-- Views/Tabs container -->
 <template lang="pug">
-  Page(loginScreen)
-    Button.padding-left.justify-content-left(round onClick="{close}")
+  Page(loginScreen).p-4
+    Button.absolute.top-2.left-2(round onClick="{close}")
       Icon(f7="xmark", size="32px")
     LoginScreenTitle
       h1 MEGA
@@ -10,10 +10,10 @@
       ListInput(type='password' placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
       Button(fill onClick="{login}")
         h3 登入
-    BlockFooter
-    | 由NiceCourseToU團隊精心打造。
-    | 透過MEGA，你可以在手機上使用App存取。
-    | 無須重新登入，從此拋開難用的NewE3。
+    BlockFooter.p-4
+      p 由NiceCourseToU團隊精心打造。
+      p 透過MEGA，你可以在手機上使用App存取。
+      p 無須重新登入，從此拋開難用的NewE3。
 </template>
 <script>
 import {onMount} from 'svelte';
@@ -48,6 +48,7 @@ function login() {
     f7.toast.create({text: "密碼還沒輸", closeTimeout: 3000}).open()
     return
   }
+  f7.toast.create({text: "登入中...", closeTimeout: 3000}).open()
   e3Network.post('login/token.php', qs.stringify({
     service: 'moodle_mobile_app',
     username: username,
@@ -60,6 +61,7 @@ function login() {
       console.log('Got Token')
       _getUserInfo(username)
     } else {
+      f7.toast.create({text: "登入失敗，請重試...", closeTimeout: 3000}).open()
       console.error('Server not provide token!')
       console.error('Detail:' + JSON.stringify(resp.data))
     }
