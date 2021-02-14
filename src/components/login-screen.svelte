@@ -11,9 +11,9 @@
         h1 Again
         .w-24.h-1.bg-black
       List(form inset noHairlinesMd).pt-16.space-y-4
-        ListInput(type='email' placeholder='學號' bind:value='{username}' clearButton)
+        ListInput(type='text' autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 person
-        ListInput(type='password' placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
+        ListInput(type='password' autocomplete="current-password" placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 lock
       Button(fill onClick="{login}").mx-4.mt-8
         h2 登入
