@@ -4,12 +4,10 @@
     Block(inset strong).text-align-center
       h1
         Icon(f7="person_alt_circle" size="160px")
-      h1 {$newe3Config.realname}
-      h3 {$newe3Config.studentID}
-      h4 {$newe3Config.dep}
-      Button(bottom round fill onClick="{onClickLogin}") 登入E3
-    LoginScreen(opened="{isLoginScreenOpened}")
-      LoginScreenContent
+      h1 {$newe3Config.realname??"尚未登入"}
+      h3 {$newe3Config.studentID??""}
+      h4 {$newe3Config.dep??""}
+      Button(bottom round fill loginScreenOpen=".e3-login-page") 登入E3
 </template>
 
 <script type="text/javascript">

@@ -24,14 +24,14 @@ var routes = [
     path: '/aboutme',
     component: AboutmePage,
   },
-  {
-    path: '/product/:id/',
-    component: ProductPage,
-  },
-  {
-    path: '/dynamic-route/blog/:blogId/post/:postId/',
-    component: DynamicRoutePage,
-  },
+  // {
+  //   path: '/product/:id/',
+  //   component: ProductPage,
+  // },
+  // {
+  //   path: '/dynamic-route/blog/:blogId/post/:postId/',
+  //   component: DynamicRoutePage,
+  // },
   // {
   //   path: '/request-and-load/user/:userId/',
   //   async: function ({ router, to, resolve }) {
