@@ -4,13 +4,16 @@
 
     .h-full.overflow-y-hidden
       BlockTitle 本日課程
-      OneDayCoursesGantt
+      Card
+        OneDayCoursesGantt
 
       BlockTitle 近期作業
-      HomeworkGantt
+      Card(class="h-1/4").overflow-y-scroll
+        HomeworkGantt
 
       BlockTitle 近期公告
-      AnnouncementList
+      Card(class="h-1/4").overflow-y-scroll
+        AnnouncementList
 
 </template>
 <script>

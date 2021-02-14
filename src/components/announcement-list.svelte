@@ -1,5 +1,5 @@
 <template lang="pug">
-  List.overflow-y-scroll(class="h-1/4")
+  List.overflow-y-scroll
       +each('announcements as a')
         ListItem
           h3 {a.name}

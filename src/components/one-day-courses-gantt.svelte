@@ -1,22 +1,21 @@
 <template lang="pug">
-  .overflow-x-scroll.overflow-y-hidden.h-24
-    table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-x-auto
-      thead.text-align-left.bg-gray-100.sticky
-        tr
-          +each('timeslotShort as s')
-            th(width="{tableWidthString}")
-              h4 {s}
-      tbody
-        tr
-          +each('timeslotShort as s')
-            +if('coursesOnTable[d+s]')
-              td(colspan="{coursesOnTable[d+s].last}" width="`${colWidth*coursesOnTable[d+s].last}`px")
-                .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200.truncate
-                  p.text-sm {coursesOnTable[d+s].name}
-                  p.font-mono.text-sm.opacity-70 {coursesOnTable[d+s].at??''}:{d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}
+  table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-x-auto
+    thead.text-align-left.bg-gray-100.sticky.font-serif.shadow
+      tr
+        +each('timeslotShort as s')
+          th(width="{tableWidthString}")
+            h4 {s}
+    tbody
+      tr
+        +each('timeslotShort as s')
+          +if('coursesOnTable[d+s]')
+            td(colspan="{coursesOnTable[d+s].last}" width="`${colWidth*coursesOnTable[d+s].last}`px")
+              .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200.truncate
+                p.text-sm {coursesOnTable[d+s].name}
+                p.font-mono.text-sm.opacity-70 {coursesOnTable[d+s].at??''}:{d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}
 
-            +if('!coursesOccupied.includes(d+s)')
-              td(width="{tableWidthString}").h-16.bg-gray-50
+          +if('!coursesOccupied.includes(d+s)')
+            td(width="{tableWidthString}").h-16.bg-gray-50
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
@@ -29,7 +28,7 @@ import {onMount} from "svelte";
 import {newe3Config} from '../js/store/e3.js';
 
 
-const timeslotShort = 'yz1234n56789abcd'
+const timeslotShort = '1234n56789abc'
 const colWidth = 60
 const tableWidthString = `${colWidth}px`
 const d = 'T'

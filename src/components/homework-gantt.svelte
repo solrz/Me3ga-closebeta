@@ -1,18 +1,19 @@
 <template lang="pug">
-  .overflow-y-scroll.overflow-x-hidden(class="h-1/4")
-    table(width="{tableWidthString}" style="table-layout: fixed").rounded
-      thead.text-align-left
-        tr.bg-gray-100
-          +each('dates as s')
-            th(width="{tableWidthString}").sticky.top-0.bg-gray-100
-              h4 {s}
-      tbody
-        +each('homeworks as h')
-          tr.overflow-x-visible.overflow-y-hidden.truncate
-            td(colspan="{new Date().getDate() - h.dueDate.date}")
-              .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200
-                p.text-sm.font-bold {h.name} ({new Date().getDate() - h.dueDate.date}D)
-                p.text-xs -{h.courseName}
+  table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll
+    thead
+      tr
+        th(width="0")
+        +each('dates as s')
+          th(width="{tableWidthString}").z-50.bg-gray-100.shadow.text-align-left.font-serif.sticky.top-0
+            h4 {s}
+    tbody
+      +each('homeworks as h')
+        tr.overflow-x-visible.overflow-y-hidden.truncate
+          td(width="0").sticky.left-4.z-10
+            p.text-sm.font-bold {h.name} ({new Date().getDate() - h.dueDate.date}D)
+            p.text-xs -{h.courseName}
+          td(colspan="{new Date().getDate() - h.dueDate.date}")
+            .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
@@ -67,7 +68,7 @@ async function getHomeworks() {
         homeworks = homeworks.concat(
             c.assignments.map(a => ({
               ...a,
-              courseName: c.fullname.replace(c.shortname+'.','').split(' ')[0],
+              courseName: c.fullname.replace(c.shortname + '.', '').split(' ')[0],
               dueDate: {
                 date: new Date(a.duedate * 1000 - 1).getDate(),
                 hour: new Date(a.duedate * 1000 - 1).getHours(),
