@@ -4,7 +4,7 @@
 
     .h-full.overflow-y-hidden
       BlockTitle 本日課程
-      Card
+      Card.overflow-x-scroll
         OneDayCoursesGantt
 
       BlockTitle 近期作業

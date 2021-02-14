@@ -4,14 +4,14 @@
   table(width="{tableWidthString}" style="table-layout: fixed")
     thead.text-align-center
       tr
-        th.w-4
+        th.w-4.shadow
         +each('showingWeekdays as d')
-          th(width="{tableWidthString}").sticky.top-0.z-50.bg-gray-100
+          th(width="{tableWidthString}").sticky.top-0.z-50.bg-gray-100.font-serif.shadow
             h4 {d}
     tbody
       +each('timeslotShort as s')
-        tr(class="{'z24579bd'.includes(s) ? 'bg-gray-200' : 'bg-gray-50'}").h-12
-          td.w-4.sticky.left-0.z-40.bg-gray-100.text-align-center
+        tr(class="{'z24579bd'.includes(s) ? 'bg-gray-100' : 'bg-gray-50'}").h-12
+          th.w-4.sticky.left-0.z-40.bg-gray-100.text-align-center.font-serif.shadow
             h4 {s}
           +each('weekdaysShort as d')
             +if('coursesOnTable[d+s]')

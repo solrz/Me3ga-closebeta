@@ -1,5 +1,5 @@
 <template lang="pug">
-  table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-x-auto
+  table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-scroll
     thead.text-align-left.bg-gray-100.sticky.font-serif.shadow
       tr
         +each('timeslotShort as s')
@@ -9,10 +9,10 @@
       tr
         +each('timeslotShort as s')
           +if('coursesOnTable[d+s]')
-            td(colspan="{coursesOnTable[d+s].last}" width="`${colWidth*coursesOnTable[d+s].last}`px")
-              .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200.truncate
+            td(colspan="{coursesOnTable[d+s].last}" width="`${colWidth*coursesOnTable[d+s].last}`px").overflow-x-visible.overflow-y-hidden.truncate
+              .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-purple-500.to-purple-200
                 p.text-sm {coursesOnTable[d+s].name}
-                p.font-mono.text-sm.opacity-70 {coursesOnTable[d+s].at??''}:{d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}
+                p.font-serif.text-sm.opacity-70 {coursesOnTable[d+s].at??''}:{d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}
 
           +if('!coursesOccupied.includes(d+s)')
             td(width="{tableWidthString}").h-16.bg-gray-50

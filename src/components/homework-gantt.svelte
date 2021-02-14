@@ -13,7 +13,7 @@
             p.text-sm.font-bold {h.name} ({new Date().getDate() - h.dueDate.date}D)
             p.text-xs -{h.courseName}
           td(colspan="{new Date().getDate() - h.dueDate.date}")
-            .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-red-500.to-purple-200
+            .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-purple-400.to-purple-200
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
