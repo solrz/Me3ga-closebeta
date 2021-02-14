@@ -1,28 +1,14 @@
 <!-- Views/Tabs container -->
-<template>
-  <Views tabs class="safe-areas">
-    <!-- Tabbar for switching views-tabs -->
-    <Toolbar tabbar labels bottom>
-      <Link tabLinkActive tabLink="#view-today" iconIos="f7:square_list_fill" iconAurora="f7:square_list_fill"
-            iconMd="material:view_list" text="今日"/>
-      <Link  tabLink="#view-timetable" iconIos="f7:gear" iconAurora="f7:gear" iconMd="material:settings"
-            text="課表"/>
-      <Link tabLink="#view-aboutme" iconIos="f7:person_alt_circle" iconAurora="f7:person_alt_circle"
-            iconMd="material:person" text="關於我"/>
-    </Toolbar>
+<template lang="pug">
+  Views.safe-areas(tabs)
+    Toolbar(tabbar labels bottom)
+      Link(tabLinkActive tabLink='#view-today' iconIos='f7:today' iconAurora='f7:today' iconMd='f7:today' text='今日')
+      Link(tabLink='#view-timetable' iconIos='f7:rectangle_split_3x1_fill' iconAurora='f7:rectangle_split_3x1_fill' iconMd='f7:rectangle_split_3x1_fill' text='課表')
+      Link(tabLink='#view-aboutme' iconIos='f7:person_alt_circle' iconAurora='f7:person_alt_circle' iconMd='material:person' text='關於我')
+    View#view-today(name='catalog' tab tabActive url='/today/')
+    View#view-timetable(name='settings' tab url='/timetable/')
+    View#view-aboutme(main tab url='/aboutme/')
 
-
-    <!-- Catalog View -->
-    <View id="view-today" name="catalog" tab tabActive url="/today/"/>
-
-    <!-- Settings View -->
-    <View id="view-timetable" name="settings" tab url="/timetable/"/>
-
-    <!-- Your main view/tab, should have "view-main" class. It also has "tabActive" prop -->
-    <View id="view-aboutme" main tab url="/aboutme/"/>
-
-
-  </Views>
 </template>
 
 <script>
