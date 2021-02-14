@@ -1,19 +1,27 @@
 <!-- Views/Tabs container -->
 <template lang="pug">
-  Page(loginScreen).p-4
-    Button.absolute.top-2.left-2(round onClick="{close}")
-      Icon(f7="xmark", size="32px")
-    LoginScreenTitle
-      h1 MEGA
-    List(inset noHairlinesMd)
-      ListInput(type='text' placeholder='學號' bind:value='{username}' clearButton)
-      ListInput(type='password' placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
-      Button(fill onClick="{login}")
-        h3 登入
-    BlockFooter.p-4
-      p 由NiceCourseToU團隊精心打造。
-      p 透過MEGA，你可以在手機上使用App存取。
-      p 無須重新登入，從此拋開難用的NewE3。
+  Page(loginScreen)
+    .h-screen.m-4.px-2
+      Button.absolute.top-2.left-1(round onClick="{close}")
+        Icon(f7="xmark", size="24px")
+      LoginScreenTitle.pt-16.text-align-left.font-serif
+        h1 Make
+        h1 E₃
+        h1 Great
+        h1 Again
+        .w-24.h-1.bg-black
+      List(form inset noHairlinesMd).pt-16.space-y-4
+        ListInput(type='email' placeholder='學號' bind:value='{username}' clearButton)
+          i.f7-icons.person(slot="media").opacity-60 person
+        ListInput(type='password' placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
+          i.f7-icons.person(slot="media").opacity-60 lock
+      Button(fill onClick="{login}").mx-4.mt-8
+        h2 登入
+        i.f7-icons.person(slot="media") paperplane
+      Block
+        p 由NiceCourseToU團隊精心打造。
+        p 透過MEGA，你可以在手機上使用App存取。
+        p 無須重新登入，從此拋開難用的NewE3。
 </template>
 <script>
 import {onMount} from 'svelte';
@@ -27,7 +35,7 @@ import {
   List,
   ListInput,
   ListButton,
-  BlockFooter,
+  Block,
   Toast,
   Button, Icon
 } from 'framework7-svelte';
