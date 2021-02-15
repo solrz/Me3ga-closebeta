@@ -25,7 +25,7 @@
 </template>
 <script>
 import {onMount} from 'svelte';
-import {newe3Config} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3.js';
 import {
   f7,
   View,
@@ -41,6 +41,7 @@ import {
 } from 'framework7-svelte';
 import {e3Network} from "../js/api/e3";
 import qs from "qs";
+import * as courseTimeLookup from "../assets/1092-time.json";
 
 
 let username = '';
@@ -88,6 +89,7 @@ function _getUserInfo(studentID) {
     'values[0]': useStudentID,
     field: 'username'
   };
+  f7.dialog.preloader("登入中...");
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify(getUserInfoForm)).then(function (resp) {
     if (!resp.data.error) {
       const e3ID = resp.data[0].id
@@ -97,9 +99,10 @@ function _getUserInfo(studentID) {
       $newe3Config.dep = dep
       $newe3Config.realname = realname
       console.log('Got E3ID')
-      f7.dialog.alert('登入成功', () => {
-        f7.loginScreen.close();
-      });
+      _getCourses()
+      f7.dialog.close();
+      f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
+      f7.loginScreen.close();
     } else {
       console.error('Server not provide token!')
       console.error('Detail:' + JSON.stringify(resp.data))
@@ -107,6 +110,23 @@ function _getUserInfo(studentID) {
   })
 }
 
+async function _getCourses() {
+  // console.log(courseTimeLookup)
+  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
+    wstoken: $newe3Config.token,
+    wsfunction: 'core_enrol_get_users_courses',
+    userid: $newe3Config.e3ID
+  })).then(function (resp) {
+    if (!resp.data.error) {
+      $newe3Cache.allCourses = resp.data
+      $newe3Cache.courses = resp.data.filter(c => c.shortname.includes('1092'))
+    } else {
+      console.error('Server not provide token!')
+      console.error('Detail:' + JSON.stringify(resp.data))
+    }
+  })
+
+}
 function alertLoginData() {
   login(username, pwd)
 }
