@@ -2,6 +2,7 @@
 import axios from "axios";
 import qs from 'qs';
 import {newe3Config, newe3Cache} from '../store/e3Store';
+import {courseIDs} from '../store/courses.svelte'
 import {get} from 'svelte/store'
 
 let instance = null;
@@ -62,7 +63,7 @@ class E3Api {
 
   async _login(studentID, password) {
     console.debug('Loginning')
-    if(debug){
+    if (debug) {
       return '85dba17db6eed41970338eeca5d1c028'
     }
     try {
@@ -88,7 +89,7 @@ class E3Api {
   }
 
   async getUserInfo(_studentID) {
-    const studentID = _studentID??get(newe3Config).studentID
+    const studentID = _studentID ?? get(newe3Config).studentID
     console.debug('Getting user info...')
     const data = await e3NetworkApi(
         'core_user_get_users_by_field',
@@ -97,13 +98,14 @@ class E3Api {
     return data
   }
 
-  async refreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID) {
+  async refreshCache(token = get(newe3Config).token) {
     if (!token) {
       console.warn("User have not Login yet!")
       return
     }
     await Promise.all([
-      this.getCourses()
+      this.getCourses(),
+      this.getHomeworks()
     ])
   }
 
@@ -117,6 +119,32 @@ class E3Api {
     return resp
   }
 
+  async getHomeworks(_courseIDs) {
+    const cIDs = _courseIDs??get(courseIDs)
+    console.debug(`${cIDs} ${_courseIDs} ${get(courseIDs)}`)
+    console.debug('Getting Homeworks...')
+    const resp = await e3NetworkApi(
+        'mod_assign_get_assignments',
+        {courseids: cIDs},
+        function (data) {
+          var homeworks = []
+          data.courses.forEach(function (c) {
+            homeworks = [...homeworks,
+              ...c.assignments.map(a => ({
+                    ...a,
+                    course: c,
+                    courseName: c.fullname.replace(c.shortname + '.', '').split(' ')[0],
+                  })
+              )
+            ]
+          })
+          homeworks = homeworks
+              .sort((l, r) => l.duedate - r.duedate)
+          newe3Cache.update({homeworks})
+        })
+
+    return resp
+  }
 
 }
 
