@@ -52,9 +52,9 @@ import * as courseTimeLookup from '../assets/1092-time.json'
 let courses = []
 let coursesOnTable = {}
 let coursesOccupied = []
-
+$: courses = ($newe3Cache.allCourses??[]).filter( c => c.fullname.includes('1092'))
 export async function getCourses() {
-  courses = ($newe3Cache.allCourses??[]).filter( c => c.fullname.includes('1092'))
+
   courses.forEach(function (c) {
     let times = courseTimeLookup[c.shortname]
     times.forEach(function (t) {

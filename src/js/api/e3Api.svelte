@@ -5,7 +5,7 @@ import {newe3Config, newe3Cache} from '../store/e3Store';
 import {get} from 'svelte/store'
 
 let instance = null;
-
+const debug = true
 export const e3Network = axios.create({
   baseURL: 'https://e3.nycu.edu.tw/',
   headers: {
@@ -16,18 +16,19 @@ export const e3Network = axios.create({
 })
 
 async function e3NetworkApi(funcName, payload, onDone) {
-  const data = {
-    ...payload,
+  let data = {
+    wsfunction: funcName,
     wstoken: get(newe3Config).token,
-    wsfunction: funcName
+    ...payload
   }
+  console.log(`e3NetworkApi(${JSON.stringify(funcName)}, ${JSON.stringify(payload)}, ${JSON.stringify(onDone)})`)
   try {
     const resp = await e3Network.post(e3ApiGeneralUrl, qs.stringify(data))
     if (!resp.data.error) {
+      console.debug(resp.data)
       if (onDone) {
         onDone(resp.data)
       }
-      console.debug(resp.data)
       return resp.data
     } else {
       console.error('Server Response Error!')
@@ -50,21 +51,20 @@ class E3Api {
 
   async login(studentID, password) {
     const token = await this._login(studentID, password)
-    if (token === 'LoginFail') {
-      return false
-    }
+    newe3Config.update({token, studentID})
 
-    const e3ID = await this._getUserIDofE3(token, studentID)
-    if (e3ID === 'loginFail') {
-      return false
-
-    }
+    const profiles = await this.getUserInfo()
+    const e3ID = profiles[0].id
+    newe3Config.update({e3ID})
     this.refreshCache(token, e3ID)
     return {token, e3ID}
   }
 
   async _login(studentID, password) {
     console.debug('Loginning')
+    if(debug){
+      return '85dba17db6eed41970338eeca5d1c028'
+    }
     try {
       const resp = await e3Network.post('login/token.php', qs.stringify({
         service: 'moodle_mobile_app',
@@ -87,27 +87,18 @@ class E3Api {
     return 'LoginFail'
   }
 
-  async _getUserIDofE3(studentID = get(newe3Config).studentID) {
-    console.debug('Getting user id...')
-    const resp = await e3NetworkApi(
-        'core_user_get_users_by_field',
-        {'values[0]': studentID, field: 'username'},
-        (d) => newe3Config.update({studentID, e3ID: d[0].id}))
-    return resp
-    return 'LoginFail'
-  }
-
-  async getUserInfo(studentID = get(newe3Config).studentID) {
+  async getUserInfo(_studentID) {
+    const studentID = _studentID??get(newe3Config).studentID
     console.debug('Getting user info...')
-    const resp = await e3NetworkApi(
+    const data = await e3NetworkApi(
         'core_user_get_users_by_field',
-        {'values[0]': studentID, field: 'username'},
+        {field: 'username', values: [studentID]},
         (d) => newe3Cache.update({userInfo: d}))
-    return resp
+    return data
   }
 
   async refreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID) {
-    if (!token || !e3ID) {
+    if (!token) {
       console.warn("User have not Login yet!")
       return
     }
@@ -121,7 +112,7 @@ class E3Api {
     const resp = await e3NetworkApi(
         'core_enrol_get_users_courses',
         {userid: e3ID},
-        (d) => newe3Cache.update(newe3Cache.update({allCourses: resp.data}))
+        (d) => newe3Cache.update({allCourses: d})
     )
     return resp
   }

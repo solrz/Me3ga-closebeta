@@ -7,6 +7,7 @@
       h1 {realname??"尚未登入"}
       h3 {studentID??""}
       Button(bottom round fill loginScreenOpen=".e3-login-page") 登入E3
+      //Button(bottom round fill onClick="e3api.logout") 登出E3
       Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
 </template>
 

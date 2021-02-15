@@ -39,6 +39,9 @@ let expanded = false
 
 
 export async function getHomeworks() {
+  if(!$newe3Config.token){
+    return
+  }
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
     wstoken: $newe3Config.token,
     wsfunction: 'mod_assign_get_assignments',
