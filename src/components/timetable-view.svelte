@@ -44,9 +44,9 @@ const showingTimeslot = ['A', 'B', 'C', 'D', 'X', 'E', 'F', 'G', 'H', 'Y', 'I', 
 const timeslotShort = 'yz1234n56789abcd'
 
 import {onMount} from 'svelte'
-import {e3Network} from "../js/api/e3";
+import {e3Network} from "../js/api/e3Api";
 import qs from "qs";
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import * as courseTimeLookup from '../assets/1092-time.json'
 
 let courses = []
@@ -54,7 +54,7 @@ let coursesOnTable = {}
 let coursesOccupied = []
 
 export async function getCourses() {
-  courses = $newe3Cache.courses.filter( c => c.fullname.includes('1092'))
+  courses = ($newe3Cache.allCourses??[]).filter( c => c.fullname.includes('1092'))
   courses.forEach(function (c) {
     let times = courseTimeLookup[c.shortname]
     times.forEach(function (t) {

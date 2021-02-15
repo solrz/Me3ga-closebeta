@@ -9,20 +9,24 @@
 import {BlockTitle, Block} from 'framework7-svelte'
 import {List, ListItem} from 'framework7-svelte'
 
-import {e3Network} from "../js/api/e3";
+import {e3Network} from "../js/api/e3Api";
 import qs from "qs";
 import {onMount} from "svelte";
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 
 const semester = '1091'
 
-$: coursesID = $newe3Cache.allCourses.filter(c => c.shortname.includes(semester)).map(c => c.id)
+$: coursesID = ($newe3Cache.allCourses??[]).filter(c => c.shortname.includes(semester)).map(c => c.id)
 
 let announcements = []
 export async function getForums() {
   announcements = []
+  const token = $newe3Config.token;
+  if(!token){
+    return
+  }
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
-    wstoken: $newe3Config.token,
+    wstoken: token,
     wsfunction: 'mod_forum_get_forums_by_courses',
     courseids: coursesID
   })).then(function (resp) {

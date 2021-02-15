@@ -14,10 +14,12 @@ import TabView from './tab-view.svelte'
 import LoginScreenPage from './login-screen.svelte'
 import PopUp from './pop-up.svelte'
 import LoginScreenContent from '../components/login-screen.svelte'
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
-
+import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
+import {e3api} from '../js/api/e3Api.svelte'
 newe3Config.useLocalStorage();
 newe3Cache.useLocalStorage();
+newe3UserConfig.useLocalStorage();
+
 import {
   f7,
   f7ready,
@@ -59,6 +61,7 @@ let f7params = {
 };
 
 onMount(() => {
+  e3api.refreshCache()
   f7ready(() => {
     if(!$newe3Config.token){
       f7.loginScreen.open('.e3-login-page', true)

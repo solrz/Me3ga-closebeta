@@ -7,18 +7,18 @@
       h1 {realname??"尚未登入"}
       h3 {studentID??""}
       Button(bottom round fill loginScreenOpen=".e3-login-page") 登入E3
-      Button(bottom round fill onClick="{refreshCourses}").mt-3 更新課程清單
+      Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
 </template>
 
 <script type="text/javascript">
 import {onMount} from 'svelte'
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import {
   BlockHeader,
   Page, Navbar, Row, Col, Button, Block, BlockTitle, Icon,
   LoginScreen, LoginScreenTitle, f7
 } from 'framework7-svelte'
-import {e3api} from "../js/api/e3";
+import {e3api} from "../js/api/e3Api";
 import qs from "qs";
 
 $:  userInfo = $newe3Config.userInfo
@@ -34,22 +34,6 @@ async function loadUserStatus(done) {
   if(done){
     done()
   }
-}
-
-async function refreshCourses() {
-  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
-    wstoken: $newe3Config.token,
-    wsfunction: 'core_enrol_get_users_courses',
-    userid: $newe3Config.e3ID
-  })).then(function (resp) {
-    if (!resp.data.error) {
-      $newe3Cache.allCourses = resp.data
-      $newe3Cache.courses = resp.data.filter(c => c.shortname.includes('1092'))
-    } else {
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
-  })
 }
 
 onMount(loadUserStatus)

@@ -25,7 +25,7 @@
 </template>
 <script>
 import {onMount} from 'svelte';
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import {
   f7,
   View,
@@ -39,7 +39,7 @@ import {
   Toast,
   Button, Icon
 } from 'framework7-svelte';
-import {e3api} from "../js/api/e3";
+import {e3api} from "../js/api/e3Api";
 
 let username = '';
 let password = '';
@@ -65,6 +65,7 @@ async function login() {
     $newe3Config.studentID = username
     f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
     f7.loginScreen.close()
+    e3api.getCourses()
   }
 }
 

@@ -23,3 +23,4 @@ export const createWritableStore = (key, startValue) => {
 
 export const newe3Config = createWritableStore('newe3Config', {});
 export const newe3Cache = createWritableStore('newe3Cache', {});
+export const newe3UserConfig = createWritableStore('newe3UserConfig', {semester: '1092'});

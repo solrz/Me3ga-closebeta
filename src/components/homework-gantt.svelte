@@ -20,11 +20,11 @@ import {BlockTitle, Block} from 'framework7-svelte'
 import {Card, CardHeader, CardContent, Link} from 'framework7-svelte'
 import date from 'date-and-time'
 
-import {e3Network} from "../js/api/e3";
+import {e3Network} from "../js/api/e3Api";
 import qs from "qs";
 import * as courseTimeLookup from "../assets/1092-time.json";
 import {onMount} from "svelte";
-import {newe3Config, newe3Cache} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 
 
 var dates = [...Array(100).keys()].map((i) => date.addDays(new Date(), i))
@@ -32,7 +32,7 @@ const today = new Date()
 const colWidth = 40
 const tableWidthString = `${colWidth}px`
 const semester = '1091'
-$: coursesID = $newe3Cache.allCourses.filter(c => c.shortname.includes(semester)).map(c => c.id)
+$: coursesID = ($newe3Cache.allCourses??[]).filter(c => c.shortname.includes(semester)).map(c => c.id)
 let homeworks = []
 
 let expanded = false
