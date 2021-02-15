@@ -13,7 +13,7 @@
       List(form inset noHairlinesMd).pt-16.space-y-4
         ListInput(type='text' autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 person
-        ListInput(type='password' autocomplete="current-password" placeholder='單一入口密碼' bind:value='{pwd}' clearButton)
+        ListInput(type='password' autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 lock
       Button(fill onClick="{login}").mx-4.mt-8
         h2 登入
@@ -39,100 +39,33 @@ import {
   Toast,
   Button, Icon
 } from 'framework7-svelte';
-import {e3Network} from "../js/api/e3";
-import qs from "qs";
-import * as courseTimeLookup from "../assets/1092-time.json";
-
+import {e3api} from "../js/api/e3";
 
 let username = '';
-let pwd = '';
-let isShowing = false;
+let password = '';
 
-function login() {
+async function login() {
   if ((username ?? '').length == 0) {
     f7.toast.create({text: "學號還沒輸", closeTimeout: 3000}).open()
     return
   }
-  if ((pwd ?? '').length == 0) {
+  if ((password ?? '').length == 0) {
     f7.toast.create({text: "密碼還沒輸", closeTimeout: 3000}).open()
     return
   }
-  f7.toast.create({text: "登入中...", closeTimeout: 3000}).open()
-  e3Network.post('login/token.php', qs.stringify({
-    service: 'moodle_mobile_app',
-    username: username,
-    password: pwd
-  })).then(function (resp) {
-    if (resp.data.token) {
-      const token = resp.data.token
-      $newe3Config.token = token
-      $newe3Config.studentID = username
-      console.log('Got Token')
-      _getUserInfo(username)
-    } else {
-      f7.toast.create({text: "登入失敗，請重試...", closeTimeout: 3000}).open()
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
-  })
-}
-
-function _getUserInfo(studentID) {
-  const useStudentID = studentID ?? $newe3Config.studentID
-  if (!useStudentID) {
-    console.error('User has not login yet!')
-    return
-  }
-  let getUserInfoForm = {
-    wstoken: $newe3Config.token,
-    wsfunction: 'core_user_get_users_by_field',
-    'values[0]': useStudentID,
-    field: 'username'
-  };
   f7.dialog.preloader("登入中...");
-  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify(getUserInfoForm)).then(function (resp) {
-    if (!resp.data.error) {
-      const e3ID = resp.data[0].id
-      const dep = resp.data[0].department;
-      const realname = resp.data[0].fullname.replace(dep+' ', '');
-      $newe3Config.e3ID = e3ID
-      $newe3Config.dep = dep
-      $newe3Config.realname = realname
-      console.log('Got E3ID')
-      _getCourses()
-      f7.dialog.close();
-      f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
-      f7.loginScreen.close();
-    } else {
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
-  })
-}
-
-async function _getCourses() {
-  // console.log(courseTimeLookup)
-  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
-    wstoken: $newe3Config.token,
-    wsfunction: 'core_enrol_get_users_courses',
-    userid: $newe3Config.e3ID
-  })).then(function (resp) {
-    if (!resp.data.error) {
-      $newe3Cache.allCourses = resp.data
-      $newe3Cache.courses = resp.data.filter(c => c.shortname.includes('1092'))
-    } else {
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
-  })
-
-}
-function alertLoginData() {
-  login(username, pwd)
-}
-function close(){
-  f7.loginScreen.close()
-  console.log('closed')
+  const loginInfo = await e3api.login(username, password)
+  f7.dialog.close();
+  if (!loginInfo) {
+    f7.toast.create({text: "登入失敗QQ", closeTimeout: 3000}).open()
+  }
+  if (loginInfo) {
+    $newe3Config.token = loginInfo.token
+    $newe3Config.e3ID = loginInfo.e3ID
+    $newe3Config.studentID = username
+    f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
+    f7.loginScreen.close()
+  }
 }
 
 </script>

@@ -1,6 +1,5 @@
 <template lang="pug">
   Navbar(title="課表")
-    a(slot="right") 設定
   table(width="{tableWidthString}" style="table-layout: fixed")
     thead.text-align-center
       tr
