@@ -47,37 +47,23 @@ const timeslotShort = 'yz1234n56789abcd'
 import {onMount} from 'svelte'
 import {e3Network} from "../js/api/e3";
 import qs from "qs";
-import {newe3Config} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3.js';
 import * as courseTimeLookup from '../assets/1092-time.json'
 
 let courses = []
 let coursesOnTable = {}
 let coursesOccupied = []
 
-async function getCourses() {
-  // console.log(courseTimeLookup)
-  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
-    wstoken: $newe3Config.token,
-    wsfunction: 'core_enrol_get_users_courses',
-    userid: $newe3Config.e3ID
-  })).then(function (resp) {
-    if (!resp.data.error) {
-      courses = resp.data.filter(c => c.shortname.includes('1092'))
-      console.log(JSON.stringify(courses))
-      courses.forEach(function (c) {
-        let times = courseTimeLookup[c.shortname]
-        times.forEach(function (t) {
-          const occupyBlock = timeslotShort.slice(timeslotShort.indexOf(t.start[1]), timeslotShort.indexOf(t.start[1]) + t.last).split('');
-          console.log(JSON.stringify(occupyBlock))
-          coursesOccupied += occupyBlock.map(b => t.start[0] + b)
-          coursesOnTable[t.start] = {...t, name: c.fullname.replace(c.shortname + '.', '').split(' ')[0]}
-        })
-      })
-      console.log(JSON.stringify(coursesOnTable))
-    } else {
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
+export async function getCourses() {
+  courses = $newe3Cache.courses.filter( c => c.fullname.includes('1092'))
+  courses.forEach(function (c) {
+    let times = courseTimeLookup[c.shortname]
+    times.forEach(function (t) {
+      const occupyBlock = timeslotShort.slice(timeslotShort.indexOf(t.start[1]), timeslotShort.indexOf(t.start[1]) + t.last).split('');
+      console.log(JSON.stringify(occupyBlock))
+      coursesOccupied += occupyBlock.map(b => t.start[0] + b)
+      coursesOnTable[t.start] = {...t, name: c.fullname.replace(c.shortname + '.', '').split(' ')[0]}
+    })
   })
 
 }

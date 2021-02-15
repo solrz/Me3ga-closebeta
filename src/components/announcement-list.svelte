@@ -12,29 +12,15 @@ import {List, ListItem} from 'framework7-svelte'
 import {e3Network} from "../js/api/e3";
 import qs from "qs";
 import {onMount} from "svelte";
-import {newe3Config} from '../js/store/e3.js';
+import {newe3Config, newe3Cache} from '../js/store/e3.js';
 
-let coursesID = []
+const semester = '1091'
+
+$: coursesID = $newe3Cache.allCourses.filter(c => c.shortname.includes(semester)).map(c => c.id)
+
 let announcements = []
-async function getCourses() {
-  e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
-    wstoken: $newe3Config.token,
-    wsfunction: 'core_enrol_get_users_courses',
-    userid: $newe3Config.e3ID
-  })).then(function (resp) {
-    if (!resp.data.error) {
-      coursesID = resp.data.filter(c => c.shortname.includes('1091')).map(c => c.id)
-      // console.log(JSON.stringify(coursesID))
-      getForums()
-    } else {
-      console.error('Server not provide token!')
-      console.error('Detail:' + JSON.stringify(resp.data))
-    }
-  })
-
-}
-
-async function getForums() {
+export async function getForums() {
+  announcements = []
   e3Network.post('webservice/rest/server.php?moodlewsrestformat=json', qs.stringify({
     wstoken: $newe3Config.token,
     wsfunction: 'mod_forum_get_forums_by_courses',
@@ -70,6 +56,6 @@ async function getAnnouncements(forumid) {
   })
 }
 
-onMount(getCourses)
+onMount(getForums)
 
 </script>
