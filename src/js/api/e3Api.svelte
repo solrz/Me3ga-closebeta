@@ -105,7 +105,8 @@ class E3Api {
     }
     await Promise.all([
       this.getCourses(),
-      this.getHomeworks()
+      this.getHomeworks(),
+      this.getAnnouncements(),
     ])
   }
 
@@ -120,7 +121,7 @@ class E3Api {
   }
 
   async getHomeworks(_courseIDs) {
-    const cIDs = _courseIDs??get(courseIDs)
+    const cIDs = _courseIDs ?? get(courseIDs)
     console.debug(`${cIDs} ${_courseIDs} ${get(courseIDs)}`)
     console.debug('Getting Homeworks...')
     const resp = await e3NetworkApi(
@@ -146,6 +147,34 @@ class E3Api {
     return resp
   }
 
+  async getAnnouncements(_courseIDs) {
+    async function _getAnnouncements(forumid) {
+      console.debug('Getting announcements...')
+      const resp = await e3NetworkApi(
+          'mod_forum_get_forum_discussions_paginated',
+          {
+            forumid,
+            perpage: 100,
+            sortby: 'timemodified'
+          })
+
+      newe3Cache.update({disscussions: [...get(newe3Cache).disscussions, ...resp.discussions]})
+      return resp.discussions
+    }
+
+    const cIDs = _courseIDs ?? get(courseIDs)
+    console.debug('Getting announcements...')
+    newe3Cache.update({disscussions:[]})
+    const resp = await e3NetworkApi(
+        'mod_forum_get_forums_by_courses',
+        {courseids: cIDs},
+        function (forums) {
+          forums.forEach(f => _getAnnouncements(f.id))
+          newe3Cache.update({forums})
+        })
+
+    return resp
+  }
 }
 
 export const e3api = new E3Api();

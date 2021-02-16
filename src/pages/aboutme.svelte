@@ -1,5 +1,5 @@
 <template lang="pug">
-  Page(name="mega-home" ptr onPageMounted="{loadUserStatus}" onPtrRefresh="{loadUserStatus}")
+  Page(name="mega-home")
     Navbar(title="MEGA 首頁")
     Block(inset strong).text-align-center
       h1
@@ -13,7 +13,7 @@
 
 <script type="text/javascript">
 import {onMount} from 'svelte'
-import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
+import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
 import {
   BlockHeader,
   Page, Navbar, Row, Col, Button, Block, BlockTitle, Icon,
@@ -27,15 +27,4 @@ $:  studentID = $newe3Config.studentID
 $:  dep = (userInfo??{}).departure
 $:  realname = ((userInfo??{}).fullname??'').replace(dep+' ','')
 
-async function loadUserStatus(done) {
-  const userInfo = await e3api.getUserInfo($newe3Config.token, studentID)
-  if (userInfo) {
-    $newe3Config.userInfo = userInfo
-  }
-  if(done){
-    done()
-  }
-}
-
-onMount(loadUserStatus)
 </script>
