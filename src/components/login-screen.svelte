@@ -2,7 +2,7 @@
 <template lang="pug">
   Page(loginScreen onPageInit="{onShow}")
     .h-screen.m-4.px-2
-      Button.absolute.top-2.left-1(round onClick="{close}")
+      Button.absolute.top-2.left-1(round onClick="{f7.loginScreen.close}")
         Icon(f7="xmark", size="24px")
       LoginScreenTitle.pt-16.text-align-left.font-serif
         +if('showing === true')
@@ -21,9 +21,14 @@
         h2 登入
         //i.f7-icons.person paperplane
       Block
-        p 由NiceCourseToU團隊精心打造。
-        p 透過MEGA，你可以在手機上使用App存取。
-        p 無須重新登入，從此拋開難用的NewE3。
+        Row
+          Col(width="20")
+            Link(href="https://www.facebook.com/NiceCourseToU" external target="_blank")
+              img(src="../../static/icons/128.png" alt="NiceCourseToU-LOGO").w-full
+          Col(width="80")
+            p 由NiceCourseToU團隊精心打造。
+            p 透過MEGA，你可以在手機上使用App存取。
+            p 無須重新登入，從此拋開難用的NewE3。
 </template>
 <script>
 import {onMount} from 'svelte';
@@ -32,6 +37,7 @@ import {quintOut,} from 'svelte/easing'
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import {
   f7,
+  Link,
   View,
   Page,
   LoginScreen,
@@ -41,7 +47,7 @@ import {
   ListButton,
   Block,
   Toast,
-  Button, Icon
+  Button, Icon, Row, Col
 } from 'framework7-svelte';
 import {e3api} from "../js/api/e3Api";
 
@@ -51,6 +57,7 @@ let showing = false;
 const transitionParam = {delay: 600, duration: 1200, easing: quintOut}
 
 onMount(onShow)
+
 function onShow() {
   if (showing) {
     showing = false
@@ -82,5 +89,6 @@ async function login() {
     e3api.getCourses()
   }
 }
+
 
 </script>
