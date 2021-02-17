@@ -7,11 +7,11 @@
       Link(tabLink='#view-aboutme' iconIos='f7:person_alt' iconAurora='f7:person_alt' iconMd='material:person' text='關於我')
       Link( tabLink='#view-homeworks' iconIos='f7:doc_fill' iconAurora='f7:doc_fill' iconMd='material:person' text='作業')
       Link(tabLinkActive tabLink='#view-announcements' iconIos='f7:pin_fill' iconAurora='f7:pin_fill' iconMd='material:person' text='公告')
-    View#view-today(name='catalog' tab  url='/today/')
-    View#view-timetable(name='settings' tab url='/timetable/')
+    View#view-today(name='catalog' tab  url='/today/ tabActive')
+    View#view-timetable(name='settings' tab url='/timetable/'  )
     View#view-aboutme(main tab url='/aboutme/')
     View#view-homeworks(main tab url='/homeworks/' )
-    View#view-announcements(main tab url='/announcements/' tabActive)
+    View#view-announcements(main tab url='/announcements/' )
 
 </template>
 
@@ -40,7 +40,7 @@ import {
   ListInput,
   ListButton,
   BlockFooter,
-    Tab,Tabs
+  Tab, Tabs
 } from 'framework7-svelte';
 
 
