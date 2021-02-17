@@ -6,7 +6,7 @@ import {courseIDs, derivedNameCourses} from '../store/courses.svelte'
 import {get} from 'svelte/store'
 
 let instance = null;
-const debug = true
+const debug = false
 export const e3Network = axios.create({
   baseURL: 'https://e3.nycu.edu.tw/',
   headers: {
@@ -64,9 +64,9 @@ class E3Api {
 
   async _login(studentID, password) {
     console.debug('Loginning')
-    if (debug) {
-      return '85dba17db6eed41970338eeca5d1c028'
-    }
+    // if (debug) {
+    //   return '85dba17db6eed41970338eeca5d1c028'
+    // }
     try {
       const resp = await e3Network.post('login/token.php', qs.stringify({
         service: 'moodle_mobile_app',
