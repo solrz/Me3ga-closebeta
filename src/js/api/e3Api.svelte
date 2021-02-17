@@ -189,6 +189,17 @@ class E3Api {
 
     return resp
   }
+
+  async getStudents(courseid) {
+    console.debug('Getting announcements...')
+    newe3Cache.update({discussions:[]})
+    const resp = await e3NetworkApi(
+        'mod_forum_get_forums_by_courses',
+        {courseid},
+        )
+
+    return resp
+  }
 }
 
 export const e3api = new E3Api();
