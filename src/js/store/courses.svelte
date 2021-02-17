@@ -11,5 +11,4 @@ export let courses = derived(derivedNameCourses,
           c => c.fullname.includes(newe3UserConfig.semester)
       )
 )
-
 </script>

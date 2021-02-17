@@ -2,7 +2,7 @@
   List.overflow-y-scroll
       +each('announcements as a')
         ListItem
-          h3 Hi
+          h3 {a.name}
 
 </template>
 <script>
@@ -15,5 +15,5 @@ import {onMount} from "svelte";
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 
 const semester = '1091'
-$: announcements = ($newe3Cache.disscussions??[])
+$: announcements = ($newe3Cache.disscussions??[]).filter( a => a.created * 1000 + 30*86400*1000 > Date.now() )
 </script>

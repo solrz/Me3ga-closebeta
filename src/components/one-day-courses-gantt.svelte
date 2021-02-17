@@ -1,5 +1,5 @@
 <template lang="pug">
-  table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-scroll
+  table(backdrop width="{tableWidthString}" style="table-layout: fixed").overflow-scroll.min-w-full
     thead.text-align-left.bg-gray-100.sticky.font-serif.shadow
       tr
         +each('timeslotShort as s')

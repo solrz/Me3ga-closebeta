@@ -1,5 +1,5 @@
 <template lang="pug">
-  table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll
+  table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll.min-w-full
     thead
       tr
         th(width="0")

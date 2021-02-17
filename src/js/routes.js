@@ -4,6 +4,8 @@ import AboutmePage from '../pages/aboutme.svelte'
 import TodayPage from '../pages/today.svelte'
 import TimetablePage from '../pages/timetable.svelte'
 import CourseDetailPage from '../pages/course-detail.svelte'
+import HomeworksPage from '../pages/homeworks.svelte'
+import AnnouncementsPage from '../pages/announcements.svelte'
 
 import DynamicRoutePage from '../pages/dynamic-route.svelte';
 import NotFoundPage from '../pages/404.svelte';
@@ -24,6 +26,14 @@ var routes = [
   {
     path: '/aboutme',
     component: AboutmePage,
+  },
+  {
+    path: '/homeworks',
+    component: HomeworksPage,
+  },
+  {
+    path: '/announcements',
+    component: AnnouncementsPage,
   },
   {
     path: '/course/:courseID/',

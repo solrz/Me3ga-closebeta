@@ -2,7 +2,7 @@
 import axios from "axios";
 import qs from 'qs';
 import {newe3Config, newe3Cache} from '../store/e3Store';
-import {courseIDs} from '../store/courses.svelte'
+import {courseIDs, derivedNameCourses} from '../store/courses.svelte'
 import {get} from 'svelte/store'
 
 let instance = null;
@@ -22,7 +22,7 @@ async function e3NetworkApi(funcName, payload, onDone) {
     wstoken: get(newe3Config).token,
     ...payload
   }
-  console.log(`e3NetworkApi(${JSON.stringify(funcName)}, ${JSON.stringify(payload)}, ${JSON.stringify(onDone)})`)
+  console.debug(`e3NetworkApi(${JSON.stringify(funcName)}, ${JSON.stringify(payload)}, ${JSON.stringify(onDone)})`)
   try {
     const resp = await e3Network.post(e3ApiGeneralUrl, qs.stringify(data))
     if (!resp.data.error) {
@@ -103,6 +103,10 @@ class E3Api {
       console.warn("User have not Login yet!")
       return
     }
+    if(debug) {
+      console.debug('Refresh is disabled during degug')
+      return
+    }
     await Promise.all([
       this.getCourses(),
       this.getHomeworks(),
@@ -148,17 +152,18 @@ class E3Api {
   }
 
   async getAnnouncements(_courseIDs) {
-    async function _getAnnouncements(forumid) {
+    async function _getAnnouncements(forum) {
       console.debug('Getting announcements...')
       const resp = await e3NetworkApi(
           'mod_forum_get_forum_discussions_paginated',
           {
-            forumid,
+            forumid:forum.id,
             perpage: 100,
             sortby: 'timemodified'
           })
-
-      newe3Cache.update({disscussions: [...get(newe3Cache).disscussions, ...resp.discussions]})
+      // console.debug(JSON.stringify(disscussions))
+      const discussions = resp.discussions.map(d => ({...d, course: forum.courseObj}))
+      newe3Cache.update({disscussions: [...get(newe3Cache).disscussions, ...discussions]})
       return resp.discussions
     }
 
@@ -169,7 +174,8 @@ class E3Api {
         'mod_forum_get_forums_by_courses',
         {courseids: cIDs},
         function (forums) {
-          forums.forEach(f => _getAnnouncements(f.id))
+          forums = forums.map( f => ({...f, courseObj: get(derivedNameCourses).find(c => c.id === f.course)}))
+          forums.filter(f => f.intro === '一般消息與公告').forEach(f => _getAnnouncements(f))
           newe3Cache.update({forums})
         })
 
