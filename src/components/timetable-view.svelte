@@ -17,8 +17,8 @@
               td(rowspan="{coursesOnTable[d+s].last}" width="{tableWidthString}" class="{d.includes(todayShort) ? 'opacity-80':''}").border-r-2.border-gray-50
                 Card(expandable class="h-{coursesOnTable[d+s].last*12}").m-1.z-20
                   CardContent(padding="{false}" )
-                    .bg-gradient-to-br.from-red-500.to-purple-200.h-60
-                      CardHeader.display-block
+                    .bg-gradient-to-br.from-red-500.to-purple-200
+                      CardHeader.display-block.h-60
                         .text-sm.leading-none.w-24 {coursesOnTable[d+s].name + '\n'}
                         .text-2xs.font-serif.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}-{coursesOnTable[d+s].at??''}
                       Link(cardClose iconF7="xmark_circle_fill").card-opened-fade-in.absolute.top-2.right-2
