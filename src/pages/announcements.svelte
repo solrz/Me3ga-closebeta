@@ -20,15 +20,14 @@ import {Page, Navbar} from 'framework7-svelte'
 import {List, ListItem, AccordionContent} from 'framework7-svelte'
 import {Panel, Block} from 'framework7-svelte'
 import {Link, Badge, Icon} from 'framework7-svelte'
+
 import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
 import {scale} from 'svelte/transition'
 
 import date from 'date-and-time'
 
-let openAnnouncement = {}
 
 function onSelect(announcement) {
-  openAnnouncement = announcement
   $newe3UserConfig.readAnnouncements = [...$newe3UserConfig.readAnnouncements, announcement.id]
   // f7.panel.open("#panel-nested", true)
 }

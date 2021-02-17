@@ -1,19 +1,30 @@
 <template lang="pug">
-  List.overflow-y-scroll
-      +each('announcements as a')
-        ListItem
-          h3 {a.name}
+  List(accordionList inset).overflow-y-scroll
+    +each('announcements as a')
+      ListItem(accordionItem onAccordionOpen!="{() => onSelect(a)}",
+        header="{a.course.name}",
+        title="{a.name}",
+        footer="{`公告於 ${date.format(new Date(a.created*1000-1), 'M/D')}`}")
+        AccordionContent
+          Block.bg-gray-50.rounded() {@html a.message}
+        div(slot="after")
+          +if('!$newe3UserConfig.readAnnouncements.includes(a.id)')
+            span(transition:scale).badge.color-red new
 
 </template>
 <script>
-import {BlockTitle, Block} from 'framework7-svelte'
-import {List, ListItem} from 'framework7-svelte'
+import {f7} from 'framework7-svelte'
+import {Page, Navbar} from 'framework7-svelte'
+import {List, ListItem, AccordionContent} from 'framework7-svelte'
+import {Panel, Block} from 'framework7-svelte'
+import {Link, Badge, Icon} from 'framework7-svelte'
 
-import {e3Network} from "../js/api/e3Api";
-import qs from "qs";
-import {onMount} from "svelte";
-import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
+import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
+import {scale} from 'svelte/transition'
 
-const semester = '1091'
-$: announcements = ($newe3Cache.disscussions??[]).filter( a => a.created * 1000 + 30*86400*1000 > Date.now() )
-</script>
+
+import date from 'date-and-time'
+
+$: announcements = ($newe3Cache.disscussions ?? []).filter(
+    a => a.course.shortname.includes($newe3UserConfig.semester)
+).sort((a, b) => (b.created - a.created))</script>
