@@ -57,6 +57,7 @@ class E3Api {
     const profiles = await this.getUserInfo()
     const e3ID = profiles[0].id
     newe3Config.update({e3ID})
+    newe3Cache.update({userInfo: profiles[0]})
     this.refreshCache(token, e3ID)
     return {token, e3ID}
   }
@@ -94,7 +95,7 @@ class E3Api {
     const data = await e3NetworkApi(
         'core_user_get_users_by_field',
         {field: 'username', values: [studentID]},
-        (d) => newe3Cache.update({userInfo: d}))
+        (profiles) => newe3Cache.update({userInfo: profiles[0]}))
     return data
   }
 
@@ -108,6 +109,7 @@ class E3Api {
       return
     }
     await Promise.all([
+      this.getUserInfo(),
       this.getCourses(),
       this.getHomeworks(),
       this.getAnnouncements(),

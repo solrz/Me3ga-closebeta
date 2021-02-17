@@ -27,7 +27,7 @@ import {
 import {e3api} from "../js/api/e3Api";
 import qs from "qs";
 
-$:  userInfo = $newe3Config.userInfo
+$:  userInfo = $newe3Cache.userInfo
 $:  studentID = $newe3Config.studentID
 $:  dep = (userInfo??{}).departure
 $:  realname = ((userInfo??{}).fullname??'').replace(dep+' ','')
