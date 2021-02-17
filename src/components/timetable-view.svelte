@@ -5,29 +5,28 @@
       tr.font-serif.shadow-lg
         th.w-4.sticky.top-0.bg-gray-300.z-50.rounded-tl
         +each('showingWeekdays as d')
-          th(width="{tableWidthString}").sticky.top-0.bg-gray-300.z-40
-            h4.text-gray-600 {d}
+          th(width="{tableWidthString}" class="{d.includes(todayShort) ? 'bg-indigo-50':'bg-gray-300'}").sticky.top-0.z-40
+            h4.text-size-md.text-gray-600 {d}
     tbody
       +each('timeslotShort as s')
         tr(class="{('z24579bd'.includes(s) ? 'bg-gray-200' : 'bg-gray-100') + ' ' + ('yzn9d'.includes(s) ? 'bg-gray-400' : '')}").h-12
-          th(class="{('yzn9d'.includes(s) ? 'bg-gray-400' : 'bg-gray-300')}").w-4.sticky.left-0.z-30.text-align-center.font-serif.shadow-lg
+          th(class="{('yzn9d'.includes(s) ? 'bg-gray-400' : 'bg-gray-300')}").w-4.sticky.left-0.z-30.text-align-center.font-serif.shadow-3xl
             h4.text-gray-600 {s}
           +each('weekdaysShort as d')
             +if('coursesOnTable[d+s]')
-              td(rowspan="{coursesOnTable[d+s].last}" width="{tableWidthString}").border-r-2.border-gray-50
+              td(rowspan="{coursesOnTable[d+s].last}" width="{tableWidthString}" class="{d.includes(todayShort) ? 'opacity-80':''}").border-r-2.border-gray-50
                 Card(expandable class="h-{coursesOnTable[d+s].last*12}").m-1.z-20
                   CardContent(padding="{false}" )
                     .bg-gradient-to-br.from-red-500.to-purple-200.h-36
-                      CardHeader.display-block.text-lg
-                        | {coursesOnTable[d+s].name}
-                        br
-                        p.font-mono.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}:{coursesOnTable[d+s].at??''}
+                      CardHeader.display-block
+                        .text-sm.leading-none.w-24 {coursesOnTable[d+s].name + '\n'}
+                        .text-2xs.font-serif.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}-{coursesOnTable[d+s].at??''}
                       Link(cardClose iconF7="xmark_circle_fill").card-opened-fade-in.absolute.top-2.right-2
                     .card-content-padding
                       p Hello
                       p Are You OK
             +if('!coursesOccupied.includes(d+s)')
-              td(width="{tableWidthString}").h-12.border-r-2.border-gray-50
+              td(width="{tableWidthString}" class="{d.includes(todayShort) ? 'opacity-80':''}").h-12.border-r-2.border-gray-50
 
 </template>
 <script>
@@ -48,10 +47,11 @@ import {e3Network} from "../js/api/e3Api";
 import qs from "qs";
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import * as courseTimeLookup from '../assets/1092-time.json'
-
+const weekdayIndex = new Date().getDay()
 let courses = []
 let coursesOnTable = {}
 let coursesOccupied = []
+$: todayShort = 'UMTWRFS'[weekdayIndex]
 $: courses = ($newe3Cache.allCourses??[]).filter( c => c.shortname.includes('1092'))
 export async function getCourses() {
 

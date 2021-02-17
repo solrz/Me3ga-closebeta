@@ -8,6 +8,7 @@
 <script>
 import {newe3Cache} from "../js/store/e3Store";
 import {BlockTitle, Block} from 'framework7-svelte'
+import date from 'date-and-time'
 const weekdayIndex = new Date().getDay()
 const weekdays = 'UMTWUFS'
 const chineseWeekdays = '日一二三四五六'
@@ -54,13 +55,14 @@ const timeslotsTable = new Map(timeslotsTableRaw.map(s => [s[0], {
   t:parseInt(s.slice(5, 5 + 4))}])
 )
 function getTimeslotNow(){
-  const currentTime = parseInt(`${new Date().getHours()}${new Date().getMinutes()}`)
+  const currentTime = date.format(new Date(), 'HHmm')
+  console.log(currentTime)
   for (const [symbol, duration] of timeslotsTable) {
     if(duration.f <=currentTime && currentTime < duration.t){
       return symbol+' 節'
     }
     if(currentTime < duration.f){
-      return symbol+' 節 下課'
+      return symbol+' 節 開始前下課'
     }
     console.log(JSON.stringify(duration), symbol)
   }

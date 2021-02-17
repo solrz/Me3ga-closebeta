@@ -28,10 +28,11 @@ import * as courseTimeLookup from "../assets/1092-time.json";
 import {onMount} from "svelte";
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 
+const weekdayIndex = new Date().getDay()
 const timeslotShort = '1234n56789abc'
 const colWidth = 60
 const tableWidthString = `${colWidth}px`
-const d = 'T'
+$: d = 'UMTWUFS'[weekdayIndex]
 
 const semester = '1092'
 
