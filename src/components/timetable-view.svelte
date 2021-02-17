@@ -2,16 +2,16 @@
   Navbar(title="課表")
   table(width="{tableWidthString}" style="table-layout: fixed")
     thead.text-align-center
-      tr
-        th.w-4.shadow
+      tr.shadow.font-serif.shadow
+        th.w-4.sticky.top-0.bg-gray-300.z-50
         +each('showingWeekdays as d')
-          th(width="{tableWidthString}").sticky.top-0.z-50.bg-gray-100.font-serif.shadow
-            h4 {d}
+          th(width="{tableWidthString}").sticky.top-0.bg-gray-300.z-40
+            h4.text-gray-600 {d}
     tbody
       +each('timeslotShort as s')
         tr(class="{'z24579bd'.includes(s) ? 'bg-gray-100' : 'bg-gray-50'}").h-12
-          th.w-4.sticky.left-0.z-40.bg-gray-100.text-align-center.font-serif.shadow
-            h4 {s}
+          th.w-4.sticky.left-0.z-30.bg-gray-200.text-align-center.font-serif.shadow
+            h4.text-gray-600 {s}
           +each('weekdaysShort as d')
             +if('coursesOnTable[d+s]')
               td(rowspan="{coursesOnTable[d+s].last}" width="{tableWidthString}")
