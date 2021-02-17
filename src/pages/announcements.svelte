@@ -38,7 +38,7 @@ function readAll() {
 
 }
 
-$: announcements = ($newe3Cache.disscussions ?? []).filter(
+$: announcements = ($newe3Cache.discussions ?? []).filter(
     a => a.course.shortname.includes($newe3UserConfig.semester)
 ).sort((a, b) => (b.created - a.created))
 </script>
