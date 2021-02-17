@@ -10,10 +10,12 @@
         Button(bottom round fill loginScreenOpen=".e3-login-page") 登入E3
         //Button(bottom round fill onClick="e3api.logout") 登出E3
         Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
+      ListInput(label="Token" type="text" value="{token}")
       ListInput(label="切換學期" type="select" bind:value="{$newe3UserConfig.semester}" placeholder="Please choose...")
         i( class="icon demo-list-icon" slot="media")
         option(value="1091") 109年 上學期
         option(value="1092") 109年 下學期
+
 </template>
 
 <script type="text/javascript">
@@ -27,6 +29,7 @@ import {
 import {e3api} from "../js/api/e3Api";
 import qs from "qs";
 
+$:  token = $newe3Config.token
 $:  userInfo = $newe3Cache.userInfo
 $:  studentID = $newe3Config.studentID
 $:  dep = (userInfo??{}).departure
