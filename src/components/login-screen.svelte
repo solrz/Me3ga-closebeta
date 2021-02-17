@@ -1,7 +1,7 @@
 <!-- Views/Tabs container -->
 <template lang="pug">
-  Page(loginScreen onPageInit="{onShow}")
-    .h-screen.m-4.px-2
+  Page(loginScreen onPageInit="{onShow}").bg-gray-50
+    .h-screen
       Button.absolute.top-2.left-1(round onClick="{f7.loginScreen.close}")
         Icon(f7="xmark", size="24px")
       LoginScreenTitle.h-48.pt-16.text-align-left.font-serif
@@ -39,15 +39,12 @@ import {
   f7,
   Link,
   View,
-  Page,
-  LoginScreen,
-  LoginScreenTitle,
-  List,
-  ListInput,
-  ListButton,
+  Page, Card,
+  LoginScreen, LoginScreenTitle,
+  List, ListInput, ListButton,
   Block,
-  Toast,
-  Button, Icon, Row, Col
+  Button, Icon, Row, Col,
+  Swiper, SwiperSlide
 } from 'framework7-svelte';
 import {e3api} from "../js/api/e3Api";
 

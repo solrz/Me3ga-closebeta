@@ -112,9 +112,10 @@ class E3Api {
       console.info('Since last update is not over 1 hour, ignore refresh.')
       return
     }
+
+    await this.getUserInfo()
+    await this.getCourses()
     await Promise.all([
-      this.getUserInfo(),
-      this.getCourses(),
       this.getHomeworks(),
       this.getAnnouncements(),
     ])
@@ -168,15 +169,15 @@ class E3Api {
             perpage: 100,
             sortby: 'timemodified'
           })
-      // console.debug(JSON.stringify(disscussions))
+      // console.debug(JSON.stringify(discussions))
       const discussions = resp.discussions.map(d => ({...d, course: forum.courseObj}))
-      newe3Cache.update({disscussions: [...get(newe3Cache).disscussions, ...discussions]})
+      newe3Cache.update({discussions: [...get(newe3Cache).discussions, ...discussions]})
       return resp.discussions
     }
 
     const cIDs = _courseIDs ?? get(courseIDs)
     console.debug('Getting announcements...')
-    newe3Cache.update({disscussions:[]})
+    newe3Cache.update({discussions:[]})
     const resp = await e3NetworkApi(
         'mod_forum_get_forums_by_courses',
         {courseids: cIDs},
