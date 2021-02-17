@@ -108,12 +108,17 @@ class E3Api {
       console.debug('Refresh is disabled during degug')
       return
     }
+    if((get(newe3Cache).lastupdate ?? 0) + 3600*1000 > Date.now()){
+      console.info('Since last update is not over 1 hour, ignore refresh.')
+      return
+    }
     await Promise.all([
       this.getUserInfo(),
       this.getCourses(),
       this.getHomeworks(),
       this.getAnnouncements(),
     ])
+    newe3Cache.update({lastupdate: Date.now()})
   }
 
   async getCourses(e3ID = get(newe3Config).e3ID) {

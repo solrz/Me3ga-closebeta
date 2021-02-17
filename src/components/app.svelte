@@ -1,10 +1,10 @@
 <App { ...f7params }>
 <template lang="pug">
+  LoginScreen.e3-login-page
+    LoginScreenContent
   PopUp
   LoginScreenPage
   TabView
-  LoginScreen.e3-login-page
-    LoginScreenContent
 
 </template>
 </App>
@@ -61,10 +61,11 @@ let f7params = {
 };
 
 onMount(() => {
-  e3api.refreshCache()
   f7ready(() => {
     if(!$newe3Config.token){
       f7.loginScreen.open('.e3-login-page', true)
+    }else{
+      e3api.refreshCache()
     }
   });
 })

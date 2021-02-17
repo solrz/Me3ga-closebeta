@@ -4,7 +4,7 @@
     .h-screen.m-4.px-2
       Button.absolute.top-2.left-1(round onClick="{f7.loginScreen.close}")
         Icon(f7="xmark", size="24px")
-      LoginScreenTitle.pt-16.text-align-left.font-serif
+      LoginScreenTitle.h-48.pt-16.text-align-left.font-serif
         +if('showing === true')
           div(transition:slide="{transitionParam}")
             h1 Make
@@ -54,7 +54,7 @@ import {e3api} from "../js/api/e3Api";
 let username = '';
 let password = '';
 let showing = false;
-const transitionParam = {delay: 600, duration: 1200, easing: quintOut}
+const transitionParam = {delay: 1000, duration: 1200, easing: quintOut}
 
 onMount(onShow)
 

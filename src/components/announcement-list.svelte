@@ -25,6 +25,11 @@ import {scale} from 'svelte/transition'
 
 import date from 'date-and-time'
 
+function onSelect(announcement) {
+  $newe3UserConfig.readAnnouncements = [...$newe3UserConfig.readAnnouncements, announcement.id]
+  // f7.panel.open("#panel-nested", true)
+}
+
 $: announcements = ($newe3Cache.disscussions ?? []).filter(
     a => a.course.shortname.includes($newe3UserConfig.semester)
 ).sort((a, b) => (b.created - a.created))</script>
