@@ -1,38 +1,32 @@
 <template lang="pug">
   Navbar(title="課表")
-  table(width="{tableWidthString}" style="table-layout: fixed").min-w-full.min-h-full.rounded-lg.m-2
-    thead.text-align-center
-      tr.font-serif.shadow-lg
-        th.w-4.sticky.top-0.bg-gray-300.z-50.rounded-tl
-        +each('showingWeekdays as d')
-          th(width="{tableWidthString}" class="{d.includes(todayShort) ? 'bg-indigo-300':'bg-gray-300'}").sticky.top-0.z-40
-            h4.text-size-md.text-gray-600 {d}
-    tbody
+  Row(noGap)
+    Col(width="5").text-align-center.bg-blue-50
+      .h-12
       +each('timeslotShort as s')
-        tr(class="{('z24579bd'.includes(s) ? 'bg-gray-200' : 'bg-gray-100') + ' ' + ('yzn9d'.includes(s) ? 'bg-gray-400' : '')}").h-12
-          th(class="{('yzn9d'.includes(s) ? 'bg-gray-400' : 'bg-gray-300')}").w-4.sticky.left-0.z-30.text-align-center.font-serif.shadow-3xl
-            h4.text-gray-600 {s}
-          +each('weekdaysShort as d')
-            +if('coursesOnTable[d+s]')
-              td(rowspan="{coursesOnTable[d+s].last}" width="{tableWidthString}" class="{d.includes(todayShort) ? 'opacity-80':''}").border-r-2.border-gray-50
-                Card(expandable class="h-{coursesOnTable[d+s].last*12}").m-1.z-20
-                  CardContent(padding="{false}" )
-                    .bg-gradient-to-br.from-red-500.to-purple-200
-                      CardHeader.display-block.h-60
-                        .text-sm.leading-none.w-24 {coursesOnTable[d+s].name + '\n'}
-                        .text-2xs.font-serif.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}-{coursesOnTable[d+s].at??''}
-                      Link(cardClose iconF7="xmark_circle_fill").card-opened-fade-in.absolute.top-2.right-2
-                    .card-content-padding
-                      p Hello
-                      p Are You OK
-            +if('!coursesOccupied.includes(d+s)')
-              td(rowspan="1" width="{tableWidthString}" class="{d.includes(todayShort) ? 'opacity-80':''}").h-12.border-r-2.border-gray-50
+        .h-12 {s}
+    Col(width="95")
+      Swiper(  speed="{500}" slidesPerView="{5}")
+        +each('weekdaysShort as d')
+          SwiperSlide
+            Col
+              .h-12.text-align-center.bg-blue-50.overflow-y-scroll {d}
+              +each('timeslotShort as s')
+                +if('coursesOnTable[d+s]')
+                  .rounded-xl.p-4.z-20.bg-gradient-to-br.from-red-500.to-purple-200(class="h-{coursesOnTable[d+s].last*12}")
+                    .display-block
+                      .font-bold.text-lg.leading-none {coursesOnTable[d+s].name + '\n'}
+                      .text-2xs.font-serif.text-sm.opacity-70 {d+timeslotShort.slice(timeslotShort.indexOf(s),timeslotShort.indexOf(s)+coursesOnTable[d+s].last)}-{coursesOnTable[d+s].at??''}
+                +if('!coursesOccupied.includes(d+s)')
+                  .h-12.opacity-0
+
 
 </template>
 <script>
 import {Page, Navbar, f7} from 'framework7-svelte'
 import {Row, Col} from 'framework7-svelte'
 import {Card, CardHeader, CardContent, Link} from 'framework7-svelte'
+import {Swiper, SwiperSlide} from 'framework7-svelte'
 
 const tableWidth = 120
 const tableWidthString = `${tableWidth}px`

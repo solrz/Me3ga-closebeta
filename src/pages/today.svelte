@@ -5,7 +5,7 @@
       TodaySummary
 
       BlockTitle.font-serif 本日課程
-      Card.overflow-x-scroll
+      Card
         OneDayCoursesGantt(bind:this="{componentOfOneDayCoursesGantt}")
 
       BlockTitle.font-serif 近期作業
