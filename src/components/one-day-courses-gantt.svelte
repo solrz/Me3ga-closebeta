@@ -26,6 +26,7 @@ import qs from "qs";
 import * as courseTimeLookup from "../assets/1092-time.json";
 import {onMount} from "svelte";
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
+import {derivedNameCourses} from '../js/store/courses.svelte';
 
 const weekdayIndex = new Date().getDay()
 const timeslotShort = '1234n56789abc'
@@ -37,8 +38,8 @@ const semester = '1092'
 
 let coursesOnTable = {}
 let coursesOccupied = []
-$: courses = ($newe3Cache.allCourses ?? []).filter(c => c.fullname.includes('1092'))
 
+$: courses = $derivedNameCourses
 export function getCourses() {
   courses.forEach(function (c) {
     let times = courseTimeLookup[c.shortname] ?? []

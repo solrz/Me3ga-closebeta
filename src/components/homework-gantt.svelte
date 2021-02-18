@@ -29,7 +29,7 @@ const colWidth = 40
 const tableWidthString = `${colWidth}px`
 const semester = '1091'
 $: homeworks = ($newe3Cache.homeworks??[]).filter(
-    h => h.course.shortname.includes($newe3UserConfig.semester)
+    h => h.course.shortname.includes($newe3UserConfig.semester+'.')
 )
 
 </script>

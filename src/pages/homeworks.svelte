@@ -25,7 +25,7 @@ import date from 'date-and-time'
 import {scale} from 'svelte/transition'
 
 $: homeworks = ($newe3Cache.homeworks ?? []).filter(
-    h => h.course.shortname.includes($newe3UserConfig.semester)
+    h => h.course.shortname.includes($newe3UserConfig.semester+'.')
 )
 
 function onSelect(homework) {
