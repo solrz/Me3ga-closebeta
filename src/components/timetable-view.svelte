@@ -6,9 +6,9 @@
       +each('timeslotShort as s')
         .h-12 {s}
     Col(width="95")
-      Swiper(  speed="{500}" slidesPerView="{5}")
+      Swiper(  speed="{500}" slidesPerView="auto")
         +each('weekdaysShort as d')
-          SwiperSlide
+          SwiperSlide(class="w-1/4")
             Col
               .h-12.text-align-center.bg-blue-50.overflow-y-scroll {d}
               +each('timeslotShort as s')
