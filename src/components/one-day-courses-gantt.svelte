@@ -2,7 +2,7 @@
   Swiper( slidesPerView="auto")
     +each('timeslotShort as s')
       +if('!coursesOccupied.includes(d+s)')
-        SwiperSlide(class="w-{(coursesOnTable[d+s]??{last:1}).last}/6")
+        SwiperSlide(class="w-1/6")
           h1.text-align-center {s}
       +if('coursesOnTable[d+s]')
         SwiperSlide(class="w-{(coursesOnTable[d+s]??{last:1}).last}/6")
