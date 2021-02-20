@@ -8,9 +8,10 @@ export const derivedNameCourses = derived(newe3Cache, $newe3Cache => ($newe3Cach
       )
 ))
 export const courseIDs = derived(derivedNameCourses, $derivedNameCourses => $derivedNameCourses.map(c => c.id))
-export const courses = derived(derivedNameCourses,
-      $derivedNameCourses => $derivedNameCourses.filter(
-          c => c.fullname.includes(get(newe3UserConfig).semester)
+export const courseTTIDs = derived(derivedNameCourses, $derivedNameCourses => $derivedNameCourses.map(c => c.shortname))
+export const courses = derived([derivedNameCourses, newe3UserConfig],
+      ([$derivedNameCourses, $newe3UserConfig]) => $derivedNameCourses.filter(
+          c => c.shortname.includes($newe3UserConfig.semester)
       )
 )
 </script>

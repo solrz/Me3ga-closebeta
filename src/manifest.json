@@ -1,7 +1,7 @@
 {
   "name": "MakeE₃GreatAgain",
-  "short_name": "MEGA",
-  "description": "學生自主開發非官方E3系統，拋棄腐敗校方的NewE3。",
+  "short_name": "ME₃GA",
+  "description": "學生自主開發非官方E3系統，旨在拋棄腐敗校方的工具。",
   "lang": "zh-Hant-TW",
   "start_url": "/",
   "display": "standalone",
