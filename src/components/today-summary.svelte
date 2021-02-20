@@ -1,8 +1,8 @@
 <template lang="pug">
-  BlockTitle(large).font-serif {noewBonjour} {$newe3Cache.userInfo.fullname.replace($newe3Cache.userInfo.department+' ','')}
+  BlockTitle().font-serif 嘿 {$newe3Cache.userInfo.fullname.replace($newe3Cache.userInfo.department+' ','')}！{noewBonjour}
   Block.font-serif
     span
-    |週{chineseWeekdays[weekdayIndex]}（{weekdays[weekdayIndex]}）
+    |週{chineseWeekdays[weekdayIndex]}
     span 第 {nowTimeslot}
 </template>
 <script>
@@ -39,14 +39,15 @@ const timeslotsTableRaw = [
     'f23302359',
 ]
 const bonjourText = {
-  '吃客院囉！': 'stuv',
-  '喝雞湯囉！': 'wxyz',
-  '早八洞洞！': '1',
-  '早安你好我的朋友！': '234',
-  '吃Loft了！': 'n',
-  '午安！': '5678',
+  '猜猜誰會在三點吃客院早餐？': 'stuv',
+  '喝城隍廟雞湯囉！': 'wx',
+  '日出即將從天而降！': 'yz',
+  '早八洞洞，大一起床！': '1',
+  '早上起來上早九！': '234',
+  '今日運勢：宜吃The Loft！': 'n',
+  '睡午覺辣哪次不睡？': '5678',
   '衝巨城！': '9abcd',
-  '拼作業Deadline！': 'ef',
+  '有人作業Deadline要到囉！': 'ef',
 }
 $: nowTimeslot = getTimeslotNow()
 $: noewBonjour = getBoujour()
