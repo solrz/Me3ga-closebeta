@@ -12,7 +12,7 @@
           .font-thin.text-xs {tsBegin[(globalUseClassicTimeslot ? classicTimeslotShort : timeslotShort).indexOf(s)]}
           p {s}
     Col(width="90")
-      Swiper( effect="{weekdayPerPage==3?'coverflow':''}" coverflowEffect="{weekdayPerPage==3?coverflowEff:{}}" centeredSlides slidesPerView="auto" )
+      Swiper( effect="coverflow" coverflowEffect="{coverflowEff}" slidesPerView="auto" )
         +each('weekdaysShort as d')
           SwiperSlide(class="w-1/{weekdayPerPage}")
             Col
