@@ -12,10 +12,10 @@
             h1 Great
             h1 Again
             .w-24.h-1.bg-black
-      List(form inset noHairlinesMd).pt-16.space-y-4
-        ListInput(type='text' autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
+      List(form inset noHairlinesMd onSubmit="{login}").pt-16.space-y-4
+        ListInput(type='text' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 person
-        ListInput(type='password' autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
+        ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 lock
       Button(fill onClick="{login}").mx-4.mt-8
         h2 登入

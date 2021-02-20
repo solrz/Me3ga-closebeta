@@ -7,7 +7,7 @@
       +if('coursesOnTable[d+s]')
         SwiperSlide(class="w-{(coursesOnTable[d+s]??{last:1}).last}/6")
           Col
-            .rounded-xl.px-4.z-20.bg-gradient-to-br.from-red-500.to-purple-200(class="h-{coursesOnTable[d+s].last*12}")
+            .rounded-xl.px-4.z-20.bg-blue-100(class="h-{coursesOnTable[d+s].last*12}")
               Row
                 +each('[...Array((coursesOnTable[d+s]??{last:1}).last).keys()] as i')
                   Col

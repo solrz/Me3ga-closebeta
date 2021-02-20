@@ -3,13 +3,12 @@
     Navbar(title="MEGA 首頁")
     List( noHairlinesMd)
       Block(inset strong).text-align-center
-        h1
-          Icon(f7="person_alt_circle" size="160px")
+        img(src="{userInfo.profileimageurl}" class="w-1/2").mx-auto.rounded-full.shadow-xl
         h1 {realname??"尚未登入"}
         h3 {studentID??""}
         Button(bottom round fill loginScreenOpen=".e3-login-page") 登入E3
         //Button(bottom round fill onClick="e3api.logout") 登出E3
-        Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
+        //Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
       ListInput(label="Token" type="text" value="{token}")
       ListInput(label="切換學期" type="select" bind:value="{$newe3UserConfig.semester}" placeholder="Please choose...")
         i( class="icon demo-list-icon" slot="media")

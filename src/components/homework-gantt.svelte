@@ -1,19 +1,19 @@
 <template lang="pug">
-  table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll.min-w-full
+  table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll.min-w-full.h-min-16.h-max-40
     thead
       tr
         th(width="0")
         +each('dates as d')
-          th(width="{tableWidthString}").z-50.bg-gray-100.shadow.text-align-left.font-serif.sticky.top-0
+          th(width="{tableWidthString}").z-50.bg-gray-100.shadow-xl.text-align-left.font-serif.sticky.top-0
             h4 {d.getDate()}
     tbody
       +each('homeworks as h')
         tr.overflow-x-visible.overflow-y-hidden.truncate
           td(width="0").sticky.left-4.z-10
-            p.text-sm.font-bold {h.name} ({ date.format(new Date(h.duedate*1000-1), 'M/D') })
+            p.text-sm.font-bold ({getDaysLeft(h)}天 到期) {h.name} ({ date.format(new Date(h.duedate*1000-1), 'M/D') })
             p.text-xs -{h.courseName}
-          td(colspan="{new Date().getDate() - new Date(h.duedate*1000-1).getDate()}")
-            .rounded.shadow-xl.m-1.p-1.h-12.bg-gradient-to-br.from-purple-400.to-purple-200
+          td(colspan="{ getDaysLeft(h) }")
+            .rounded.shadow-xl.m-1.p-1.h-12.bg-blue-100
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
@@ -23,13 +23,16 @@ import date from 'date-and-time'
 import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
 
 
-var dates = [...Array(100).keys()].map((i) => date.addDays(new Date(), i))
+var dates = [...Array(120).keys()].map((i) => date.addDays(new Date(), i))
 const today = new Date()
 const colWidth = 40
 const tableWidthString = `${colWidth}px`
 const semester = '1091'
 $: homeworks = ($newe3Cache.homeworks??[]).filter(
     h => h.course.shortname.includes($newe3UserConfig.semester+'.')
-)
+).sort((a,b) => a.duedate - b.duedate)
 
+function getDaysLeft(homework){
+  return parseInt((new Date(homework.duedate*1000-1) - Date.now()) / (86400*1000) + 1)
+}
 </script>

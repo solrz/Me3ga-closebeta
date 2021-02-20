@@ -26,8 +26,7 @@ import {scale} from 'svelte/transition'
 
 $: homeworks = ($newe3Cache.homeworks ?? []).filter(
     h => h.course.shortname.includes($newe3UserConfig.semester+'.')
-)
-
+).sort((a,b) => b.duedate - a.duedate)
 function onSelect(homework) {
   $newe3UserConfig.readHomeworks = [...$newe3UserConfig.readHomeworks, homework.id]
   // f7.panel.open("#panel-nested", true)
