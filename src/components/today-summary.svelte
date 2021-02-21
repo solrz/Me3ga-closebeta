@@ -1,5 +1,5 @@
 <template lang="pug">
-  BlockTitle().font-serif 嘿 {$newe3Cache.userInfo??{fullname:'無名氏'}.fullname.replace($newe3Cache.userInfo??{department:''}.department+' ','') }！{noewBonjour}
+  BlockTitle().font-serif 嘿 {userName}！{noewBonjour}
   Block.font-serif
     span
     |週{chineseWeekdays[weekdayIndex]}
@@ -49,6 +49,7 @@ const bonjourText = {
   '衝巨城！': '9abcd',
   '有人作業Deadline要到囉！': 'ef',
 }
+$: userName = ($newe3Cache.userInfo??{fullname:'無名氏'}).fullname.replace(($newe3Cache.userInfo??{department:''}).department+' ','')
 $: nowTimeslot = getTimeslotNow()
 $: noewBonjour = getBoujour()
 const timeslotsTable = new Map(timeslotsTableRaw.map(s => [s[0], {

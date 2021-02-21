@@ -5,6 +5,11 @@
       div(slot="left")
         Button(round onClick="{f7.loginScreen.close}")
           Icon(f7="xmark", size="24px")
+
+    Subnavbar
+      Segmented(raised)
+        Button(tabLinkActive tabLink="#normal-login") 密碼登入
+        Button(tabLink="#token-login") 使用存取代碼登入
     .h-screen
       LoginScreenTitle.px-4.h-48.pt-16.text-align-left.font-serif
         +if('showing === true')
@@ -14,15 +19,27 @@
             h1 Great
             h1 Again
             .w-24.h-1.bg-black
-      List(form inset noHairlinesMd onSubmit="{login}").pt-16.space-y-4
-        ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
-          i.f7-icons.person(slot="media").opacity-60 person
-        ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
-          i.f7-icons.person(slot="media").opacity-60 lock
-      Button(fill onClick="{login}").mx-4.mt-8
-        h2 登入
-      Button(fill onClick="{f7.loginScreen.close}").mx-4.mt-2
-        h2 不登入預覽App
+
+      Tabs
+        Tab(tabActive id="normal-login")
+          List(form inset noHairlinesMd onSubmit="{login}").pt-16.space-y-4
+            ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
+              i.f7-icons.person(slot="media").opacity-60 person
+            ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
+              i.f7-icons.person(slot="media").opacity-60 lock
+          Button(fill onClick="{login}").mx-4.mt-8
+            h2 登入
+          Button(fill onClick="{f7.loginScreen.close}").mx-4.mt-2
+            h2 不登入預覽App
+
+        Tab(id="token-login")
+          List(form inset noHairlinesMd onSubmit="{tokenLogin}").pt-16.space-y-4
+            ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
+              i.f7-icons.person(slot="media").opacity-60 person
+            ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='存取代碼' bind:value='{password}' clearButton)
+              i.f7-icons.person(slot="media").opacity-60 lock
+          Button(fill onClick="{tokenLogin}").mx-4.mt-8
+            h2 以存取代碼登入
         //i.f7-icons.person paperplane
       Block
         Row
@@ -48,9 +65,11 @@ import {
   List, ListInput, ListButton,
   Block,
   Button, Icon, Row, Col,
-  Swiper, SwiperSlide, Navbar
+  Swiper, SwiperSlide, Navbar, Subnavbar,
+  Tab, Tabs, Segmented
 } from 'framework7-svelte';
 import {e3api} from "../js/api/e3Api";
+import {e3ID} from "../js/store/userInfo.svelte";
 
 let username = '';
 let password = '';
@@ -75,21 +94,55 @@ async function login() {
     f7.toast.create({text: "密碼還沒輸", closeTimeout: 3000}).open()
     return
   }
-  f7.dialog.preloader("登入中...");
+  f7.dialog.preloader("登入中...")
+
   const loginInfo = await e3api.login(username, password)
+
   f7.dialog.close();
   if (!loginInfo) {
-    f7.toast.create({text: "登入失敗QQ。\n若您已經重新陽交註冊單一入口，且確定密碼正確，是因為學校設定特別擋住了你的登入。\n此時不用擔心，請隔4小時回來重試就好。", closeTimeout: 8000}).open()
+    f7.toast.create({
+      text: "登入失敗QQ。\n若您已經重新陽交註冊單一入口，且確定密碼正確，是因為學校設定特別擋住了你的登入。\n此時不用擔心，請隔4小時回來重試就好。",
+      closeTimeout: 8000
+    }).open()
   }
   if (loginInfo) {
-    $newe3Config.token = loginInfo.token
-    $newe3Config.e3ID = loginInfo.e3ID
+    $newe3Config.e3ID = loginInfo.id
     $newe3Config.studentID = username
+    $newe3Config.token = loginInfo.token
+    e3api.refreshCache(loginInfo.token, loginInfo.e3ID)
     f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
     f7.loginScreen.close()
-    e3api.getCourses()
   }
 }
 
+async function tokenLogin() {
+  if ((username ?? '').length == 0) {
+    f7.toast.create({text: "學號還沒輸", closeTimeout: 3000}).open()
+    return
+  }
+  if ((password ?? '').length == 0) {
+    f7.toast.create({text: "存取代碼還沒輸", closeTimeout: 3000}).open()
+    return
+  }
+  f7.dialog.preloader("登入中...");
+
+  $newe3Config.token = password
+  const loginInfo = await e3api.tokenLogin(username, password)
+
+  f7.dialog.close();
+  if (!loginInfo) {
+    f7.toast.create({
+      text: "登入失敗QQ。\n登入代碼可能已經失效，清況允許請用密碼登入。",
+      closeTimeout: 10000
+    }).open()
+  }
+  if (loginInfo) {
+    $newe3Config.e3ID = loginInfo.e3ID
+    $newe3Config.studentID = username
+    e3api.refreshCache(password, loginInfo.e3ID)
+    f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
+    f7.loginScreen.close()
+  }
+}
 
 </script>

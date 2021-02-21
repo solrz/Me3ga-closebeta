@@ -3,6 +3,7 @@ import axios from "axios";
 import qs from 'qs';
 import {newe3Config, newe3Cache} from '../store/e3Store';
 import {courseIDs, derivedNameCourses} from '../store/courses.svelte'
+import {studentID, token, e3ID} from '../store/userInfo.svelte'
 import {get} from 'svelte/store'
 
 let instance = null;
@@ -25,7 +26,7 @@ async function e3NetworkApi(funcName, payload, onDone) {
   console.debug(`e3NetworkApi(${JSON.stringify(funcName)}, ${JSON.stringify(payload)}, ${JSON.stringify(onDone)})`)
   try {
     const resp = await e3Network.post(e3ApiGeneralUrl, qs.stringify(data))
-    if (!resp.data.error && resp.data.errorcode) {
+    if (!resp.data.error && !resp.data.errorcode) {
       console.debug(resp.data)
       if (onDone) {
         onDone(resp.data)
@@ -38,7 +39,7 @@ async function e3NetworkApi(funcName, payload, onDone) {
   } catch (err) {
     console.error(err)
   }
-  return false
+  return null
 }
 
 const e3ApiGeneralUrl = 'webservice/rest/server.php?moodlewsrestformat=json';
@@ -62,10 +63,19 @@ class E3Api {
     const e3ID = profiles[0].id
     newe3Config.update({e3ID})
     newe3Cache.update({userInfo: profiles[0]})
-    this.refreshCache(token, e3ID)
     return {token, e3ID}
   }
-
+  async tokenLogin(studentID, token) {
+    const profiles = await this.getUserInfo(studentID)
+    if(profiles){
+      const e3ID = profiles[0].id
+      newe3Config.update({e3ID, token, studentID})
+      newe3Cache.update({userInfo: profiles[0]})
+    }else{
+      return null
+    }
+    return {token, e3ID}
+  }
   async _login(studentID, password) {
     console.debug('Loginning')
     // if (debug) {
@@ -99,11 +109,14 @@ class E3Api {
     const data = await e3NetworkApi(
         'core_user_get_users_by_field',
         {field: 'username', values: [studentID]},
-        (profiles) => newe3Cache.update({userInfo: profiles[0]}))
+        (profiles) => {
+          newe3Cache.update({userInfo: profiles[0]})
+          newe3Config.update({e3ID: profiles[0].id})
+        })
     return data
   }
 
-  async refreshCache(token = get(newe3Config).token) {
+  async refreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID) {
     if (!token) {
       console.warn("User have not Login yet!")
       return
@@ -112,10 +125,10 @@ class E3Api {
       console.debug('Refresh is disabled during degug')
       return
     }
-    if((get(newe3Cache).lastupdate ?? 0) + 3600*1000 > Date.now()){
-      console.info('Since last update is not over 1 hour, ignore refresh.')
-      return
-    }
+    // if((get(newe3Cache).lastupdate ?? 0) + 3600*1000 > Date.now()){
+    //   console.info('Since last update is not over 1 hour, ignore refresh.')
+    //   return
+    // }
 
     await this.getUserInfo()
     await this.getCourses()
