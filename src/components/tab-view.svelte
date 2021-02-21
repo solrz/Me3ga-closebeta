@@ -7,12 +7,14 @@
       Link(tabLink='#view-aboutme' iconIos='f7:person_alt' iconAurora='f7:person_alt' iconMd='material:person' text='關於我')
       Link(tabLink='#view-homeworks' iconIos='f7:doc_fill' iconAurora='f7:doc_fill' iconMd='material:work' text='作業')
       Link(tabLink='#view-announcements' iconIos='f7:pin_fill' iconAurora='f7:pin_fill' iconMd='material:announcement' text='公告')
+      //Link(tabLink='#view-chats' iconIos='f7:chat_bubble_fill' iconAurora='f7:chat_bubble_fill' iconMd='material:announcement' text='回報')
       //Link(tabLink='#view-students' iconIos='f7:pin_fill' iconAurora='f7:pin_fill' iconMd='material:announcement' text='同學')
     View#view-today(tab tabActive  name='catalog'  url='/today/')
     View#view-timetable(tab  name='settings' url='/timetable/')
     View#view-aboutme(tab url='/aboutme/')
     View#view-homeworks(tab url='/homeworks/')
     View#view-announcements(tab url='/announcements/')
+    //View#view-chats(tab url='/chats/')
     //View#view-students(tab url='/students/')
 
 </template>

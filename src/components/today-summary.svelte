@@ -1,5 +1,5 @@
 <template lang="pug">
-  BlockTitle().font-serif 嘿 {$newe3Cache.userInfo.fullname.replace($newe3Cache.userInfo.department+' ','')}！{noewBonjour}
+  BlockTitle().font-serif 嘿 {$newe3Cache.userInfo??{fullname:'無名氏'}.fullname.replace($newe3Cache.userInfo??{department:''}.department+' ','') }！{noewBonjour}
   Block.font-serif
     span
     |週{chineseWeekdays[weekdayIndex]}

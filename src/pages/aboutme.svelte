@@ -9,7 +9,7 @@
         Button.mt-4(bottom round fill loginScreenOpen=".e3-login-page") {token?'切換帳號':'登入E3'}
         //Button(bottom round fill onClick="e3api.logout") 登出E3
         //Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
-      //ListInput(label="Token" type="text" value="{token}")
+      ListInput(label="存取代號" type="text" value="{token}")
       ListInput.mt-2(label="切換學期" type="select" bind:value="{$newe3UserConfig.semester}" placeholder="Please choose...")
         span(slot="media")
           Icon( f7="chevron_left_2" )
@@ -30,9 +30,10 @@ import {e3api} from "../js/api/e3Api";
 import qs from "qs";
 
 $:  token = $newe3Config.token
-$:  userInfo = $newe3Cache.userInfo
+$:  userInfo = $newe3Cache.userInfo ?? {fullname: 'hey'}
 $:  studentID = $newe3Config.studentID
-$:  dep = (userInfo??{}).departure
-$:  realname = ((userInfo??{}).fullname??'').replace(dep+' ','')
+$:  dep = userInfo.departure
+$:  realname = userInfo.fullname.replace(dep + ' ', '')
+$: profileimageurl = userInfo.profileimageurl
 
 </script>

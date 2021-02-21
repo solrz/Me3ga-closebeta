@@ -7,6 +7,7 @@ import CourseDetailPage from '../pages/course-detail.svelte'
 import HomeworksPage from '../pages/homeworks.svelte'
 import AnnouncementsPage from '../pages/announcements.svelte'
 import StudentsPage from '../pages/students.svelte'
+import ChatsPage from '../pages/chats.svelte'
 
 import DynamicRoutePage from '../pages/dynamic-route.svelte';
 import NotFoundPage from '../pages/404.svelte';
@@ -39,6 +40,10 @@ var routes = [
   {
     path: '/students',
     component: StudentsPage,
+  },
+  {
+    path: '/chats',
+    component: ChatsPage,
   },
   {
     path: '/course/:courseID/',

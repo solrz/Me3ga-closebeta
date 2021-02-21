@@ -25,7 +25,7 @@ async function e3NetworkApi(funcName, payload, onDone) {
   console.debug(`e3NetworkApi(${JSON.stringify(funcName)}, ${JSON.stringify(payload)}, ${JSON.stringify(onDone)})`)
   try {
     const resp = await e3Network.post(e3ApiGeneralUrl, qs.stringify(data))
-    if (!resp.data.error) {
+    if (!resp.data.error && resp.data.errorcode) {
       console.debug(resp.data)
       if (onDone) {
         onDone(resp.data)
@@ -55,7 +55,7 @@ class E3Api {
     if(token){
       newe3Config.update({token, studentID})
     }else{
-
+      return null
     }
 
     const profiles = await this.getUserInfo()
@@ -90,7 +90,7 @@ class E3Api {
       console.error("Network Error During _login")
       console.error(err)
     }
-    return 'LoginFail'
+    return null
   }
 
   async getUserInfo(_studentID) {
