@@ -11,7 +11,7 @@
               Row.flex.flex-row.justify-around.font-bold.font-serif.text-sm
                 +each('[...Array((coursesOnTable[d+s]??{last:1}).last).keys()] as i')
                   h1.text-align-center {timeslotShort[timeslotShort.indexOf(s) + i] }
-              Row.h-12.overflow-y-hidden.px-2
+              Row.h-16.overflow-y-hidden.px-2
                 Col
                   .text-2xs.font-serif.text-sm.opacity-70 {coursesOnTable[d+s].at??''}
                   .font-bold.text-md.overflow-ellipse {coursesOnTable[d+s].c.name + '\n'}
@@ -28,7 +28,7 @@ import {onMount} from "svelte";
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import {courses} from '../js/store/courses.svelte';
 
-$: d = 'UMTWRFS'[weekdayIndex]
+$: d = $newe3Config.token ? 'UMTWRFS'[weekdayIndex] : 'T'
 // $: d = 'T'
 
 const semester = '1092'

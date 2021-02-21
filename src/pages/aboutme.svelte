@@ -1,16 +1,16 @@
 <template lang="pug">
   Page(name="mega-home")
-    Navbar(title="ME₃GA 首頁")
+    Navbar(title="ME₃GA 設定")
     List( noHairlinesMd)
       Block(inset strong).text-align-center
-        img(src="{userInfo.profileimageurl}" class="w-1/2").mx-auto.rounded-full.shadow-xl
+        img(alt="avatar" src="{userInfo.profileimageurl}" class="w-1/2").mx-auto.rounded-full.shadow-xl
         h1 {realname??"尚未登入"}
         h3 {studentID??""}
-        Button(bottom round fill loginScreenOpen=".e3-login-page") {token?'切換帳號':'登入E3'}
+        Button.mt-4(bottom round fill loginScreenOpen=".e3-login-page") {token?'切換帳號':'登入E3'}
         //Button(bottom round fill onClick="e3api.logout") 登出E3
         //Button(bottom round fill onClick="{e3api.getCourses}").mt-3 更新課程清單
       //ListInput(label="Token" type="text" value="{token}")
-      ListInput(label="切換學期" type="select" bind:value="{$newe3UserConfig.semester}" placeholder="Please choose...")
+      ListInput.mt-2(label="切換學期" type="select" bind:value="{$newe3UserConfig.semester}" placeholder="Please choose...")
         span(slot="media")
           Icon( f7="chevron_left_2" )
         option(value="1091") 109年 上學期

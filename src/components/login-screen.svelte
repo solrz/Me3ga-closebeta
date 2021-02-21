@@ -15,12 +15,14 @@
             h1 Again
             .w-24.h-1.bg-black
       List(form inset noHairlinesMd onSubmit="{login}").pt-16.space-y-4
-        ListInput(type='text' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
+        ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 person
         ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
           i.f7-icons.person(slot="media").opacity-60 lock
       Button(fill onClick="{login}").mx-4.mt-8
         h2 登入
+      Button(fill onClick="{f7.loginScreen.close}").mx-4.mt-2
+        h2 不登入預覽App
         //i.f7-icons.person paperplane
       Block
         Row
@@ -77,7 +79,7 @@ async function login() {
   const loginInfo = await e3api.login(username, password)
   f7.dialog.close();
   if (!loginInfo) {
-    f7.toast.create({text: "登入失敗QQ", closeTimeout: 3000}).open()
+    f7.toast.create({text: "登入失敗QQ。\n若您已經重新陽交註冊單一入口，且確定密碼正確，是因為學校設定特別擋住了你的登入。\n此時不用擔心，請隔4小時回來重試就好。", closeTimeout: 8000}).open()
   }
   if (loginInfo) {
     $newe3Config.token = loginInfo.token

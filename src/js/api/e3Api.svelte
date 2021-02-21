@@ -52,7 +52,11 @@ class E3Api {
 
   async login(studentID, password) {
     const token = await this._login(studentID, password)
-    newe3Config.update({token, studentID})
+    if(token){
+      newe3Config.update({token, studentID})
+    }else{
+
+    }
 
     const profiles = await this.getUserInfo()
     const e3ID = profiles[0].id
