@@ -6,11 +6,17 @@
           Button(tabLinkActive tabLink="#homeworks") 作業
           Button(tabLink="#announcements") 公告
           Button(tabLink="#syllabus") 大綱
+          Button(tabLink="#resources") 講義
+          Button(tabLink="#members") 修課生
     Tabs
       Tab(tabActive id="homeworks")
         HomeworkView(filter!="{h => h.course.shortname === theCourse.shortname}")
       Tab(id="announcements")
         AnnouncementsView(filter!="{h => h.course.shortname === theCourse.shortname}")
+      Tab(id="resources")
+        ResourceView(courseID="{courseID}")
+      Tab(id="members")
+        MembersView(courseID="{courseID}")
       Tab(id="syllabus")
         iframe.w-full.h-screen(src="https://timetable.nycu.edu.tw/?r=main/crsoutline&Acy={year}&Sem={yearpart}&CrsNo={courseTTID}&lang=zh-tw")
 </template>
@@ -20,6 +26,8 @@ import {Subnavbar, Segmented, Button} from 'framework7-svelte'
 import {Tabs, Tab, Block} from 'framework7-svelte'
 import HomeworkView from '../components/homeworks-view.svelte'
 import AnnouncementsView from '../components/announcements-view.svelte'
+import MembersView from '../components/members-view.svelte'
+import ResourceView from '../components/resources-view.svelte'
 import {derivedNameCourses} from '../js/store/courses.svelte';
 import {newe3UserConfig} from '../js/store/e3Store';
 
