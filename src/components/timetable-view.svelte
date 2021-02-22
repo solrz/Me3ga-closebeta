@@ -1,7 +1,9 @@
 <template lang="pug">
   Panel(resizable right reveal id="timetable-settings-panel")
     List(inset)
-      ListItem
+      +each('$courses as c')
+        ListItem {c.name}
+      ListItem.mt-4
         span 顯示整週課表
         Toggle(bind:checked="{timetableExpanded}")
       ListItem
@@ -10,7 +12,10 @@
       ListItem
         span 顯示週末
         Toggle(bind:checked="{showWeekend}")
-
+      //ListItem
+      //  span 顯示不在e3上的課程
+      //  Toggle(bind:checked="{displayNonE3Courses}")
+      //ListInput(type='text' tabindex="1" placeholder='匯入課程'  bind:value='{importCourses}' clearButton)
   Navbar(title="課表")
     div(slot="right")
       Button(raised panelOpen="#timetable-settings-panel")
@@ -69,6 +74,9 @@ const showingTimeslotRange = {f:2, t:2+13}
 let globalUseClassicTimeslot = true
 let showWeekend = false
 let timetableExpanded = false
+let displayNonE3Courses = true
+let importCourses = ''
+
 
 $: weekdayNumberToShow = showWeekend? 7 : 5
 $: weekdaysShort = 'MTWRFSU'.split('').slice(0,weekdayNumberToShow)
