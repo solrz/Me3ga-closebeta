@@ -9,11 +9,16 @@
     tbody
       +each('homeworks as h')
         tr.overflow-x-visible.overflow-y-hidden.truncate
-          td(width="0").sticky.left-4.z-10
-            p.text-sm.font-bold ({getDaysLeft(h)}天 到期) {h.name} ({ date.format(new Date(h.duedate*1000-1), 'M/D') })
-            p.text-xs -{h.courseName}
+          td(width="0").sticky.left-4.z-10.shadow-2xl
+            p.font-bold
+              span
+                span.text-xs 剩
+                span.font-serif {getDaysLeft(h)}
+                span.text-xs 天
+              span  | {h.name}
+            p.text-xs - {h.courseName} ~{ date.format(new Date(h.duedate*1000-1), 'M/D') }
           td(colspan="{ getDaysLeft(h) }").border-r-2
-            .rounded.shadow-xl.m-1.p-1.h-12.bg-blue-100
+            .rounded.shadow-2xl.m-1.p-1.h-12.bg-blue-100
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
