@@ -4,7 +4,7 @@
       tr
         th(width="0")
         +each('dates as d')
-          th(width="{tableWidthString}").z-50.bg-gray-100.shadow-xl.text-align-left.font-serif.sticky.top-0
+          th(width="{tableWidthString}").border-r-2.z-50.bg-gray-100.shadow-xl.text-align-left.font-serif.sticky.top-0
             h4 {d.getDate()}
     tbody
       +each('homeworks as h')
@@ -12,7 +12,7 @@
           td(width="0").sticky.left-4.z-10
             p.text-sm.font-bold ({getDaysLeft(h)}天 到期) {h.name} ({ date.format(new Date(h.duedate*1000-1), 'M/D') })
             p.text-xs -{h.courseName}
-          td(colspan="{ getDaysLeft(h) }")
+          td(colspan="{ getDaysLeft(h) }").border-r-2
             .rounded.shadow-xl.m-1.p-1.h-12.bg-blue-100
 </template>
 <script>
