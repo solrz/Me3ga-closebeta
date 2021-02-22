@@ -7,7 +7,9 @@
           title="{a.name}",
           footer="{`公告於 ${date.format(new Date(a.created*1000-1), 'M/D')}`}")
           AccordionContent
-            Block.bg-gray-50.rounded() {@html a.message}
+            Block.bg-gray-50.rounded()
+              |{@html a.message}
+              Link(href="/course/{a.course.id}/").font-serif   前往課程 ->
           div(slot="after")
             +if('!$newe3UserConfig.readAnnouncements.includes(a.id)')
               span(transition:scale).badge.color-red new
@@ -16,7 +18,8 @@
 </template>
 <script>
 import {List, ListItem, AccordionContent} from 'framework7-svelte'
-import {Panel, Block} from 'framework7-svelte'
+import {Panel, Block, BlockFooter} from 'framework7-svelte'
+import {Link} from 'framework7-svelte'
 import {scale} from 'svelte/transition'
 
 import date from 'date-and-time'
