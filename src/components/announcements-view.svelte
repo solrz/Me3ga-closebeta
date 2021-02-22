@@ -2,7 +2,7 @@
   +if('announcements.length !== 0')
     List(accordionList inset)
       +each('announcements as a')
-        ListItem(accordionItem onAccordionOpen!="{() => onSelect(a)}",
+        ListItem(accordionItem onAccordionClose!="{() => onSelect(a)}",
           header="{a.course.name}",
           title="{a.name}",
           footer="{`公告於 ${date.format(new Date(a.created*1000-1), 'M/D')}`}")
@@ -28,8 +28,8 @@ export let filter = (h) => true
 $: announcements = ($newe3Cache.discussions ?? []).filter(
     filter
 ).sort((a,b) => b.duedate - a.duedate)
-export function onSelect(homework) {
-  $newe3UserConfig.readAnnouncements = [...$newe3UserConfig.readAnnouncements, announcements.id]
+export function onSelect(a) {
+  $newe3UserConfig.readAnnouncements = [...$newe3UserConfig.readAnnouncements, a.id]
   // f7.panel.open("#panel-nested", true)
 }
 
