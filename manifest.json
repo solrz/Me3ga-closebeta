@@ -1,0 +1,42 @@
+{
+  "name": "MakeE₃GreatAgain",
+  "short_name": "ME₃GA",
+  "description": "你的下一個e3，何必忍受陽明做的e3? 學生自主開發非官方E3，旨在給學生們更好的工具。",
+  "lang": "zh-Hant-TW",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#98a8d7",
+  "theme_color": "#98a8d7",
+  "icons": [
+    {
+      "src": "/static/icons/128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/19ˊ.png",
+      "sizes": "196x196",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
