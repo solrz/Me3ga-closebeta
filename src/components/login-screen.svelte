@@ -45,7 +45,7 @@
         Row
           Col(width="20")
             Link(href="https://www.facebook.com/NiceCourseToU" external target="_blank")
-              img(src="../../static/icons/128.png" alt="NiceCourseToU-LOGO").w-full
+              img(src="https://i.imgur.com/jJ3wd5t.png" alt="NiceCourseToU-LOGO").w-full
           Col(width="80")
             p 由NɪᴄᴇCᴏᴜʀꜱᴇTᴏU團隊精心打造。
             p 透過ME₃GA，在手機上輕鬆存取課程新訊息。
