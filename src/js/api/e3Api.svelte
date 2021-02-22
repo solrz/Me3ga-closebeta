@@ -208,14 +208,41 @@ class E3Api {
   }
 
   async getStudents(courseid) {
-    console.debug('Getting announcements...')
-    newe3Cache.update({discussions:[]})
+    console.debug('Getting students...')
     const resp = await e3NetworkApi(
-        'mod_forum_get_forums_by_courses',
+        'core_enrol_get_enrolled_users',
         {courseid},
         )
 
     return resp
+  }
+
+  async getResourceFolders(courseid) {
+    console.debug('Getting students...')
+    const resp = await e3NetworkApi(
+        'mod_folder_get_folders_by_courses',
+        {courseids:[courseid]},
+        )
+
+    return resp
+  }
+  async getCourseContent(courseid) {
+    console.debug('Getting students...')
+    const resp = await e3NetworkApi(
+        'core_course_get_contents',
+        {courseid},
+        )
+
+    return resp[0]
+  }
+  async getCourseResources(courseid) {
+    console.debug('Getting students...')
+    const resp = await e3NetworkApi(
+        'core_course_get_contents',
+        {courseid},
+    )
+
+    return resp[0].modules.filter(m => m.modname === 'folder')
   }
 }
 
