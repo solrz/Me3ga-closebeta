@@ -1,7 +1,7 @@
 {
-  "name": "MakeE₃GreatAgain",
-  "short_name": "ME₃GA",
-  "description": "你的下一個e3，何必忍受陽明做的e3? 學生自主開發非官方E3，旨在給學生們更好的工具。",
+  "name": "ME₃GA-NCTU : MakeE₃GreatAgain - 專屬於交大學生的E3數位教學平台",
+  "short_name": "ME₃GA-NCTU",
+  "description": "你的下一個e3，何必忍受是陽明做的e3？ 交大學生聯手打造：NCTU團隊（NiceCourseToU）自主開發非官方E3，學生的權益，學生們來維護。旨在拋棄腐敗校方，只為讓學生使用更優良的App。",
   "lang": "zh-Hant-TW",
   "start_url": "/",
   "display": "standalone",
