@@ -212,6 +212,7 @@ class E3Api {
   }
 
   async getAnnouncements(_courseIDs) {
+    var newDiscussions = []
     async function _getAnnouncements(forum) {
       console.debug('Getting announcements...')
       const resp = await e3NetworkApi(
@@ -223,20 +224,21 @@ class E3Api {
           })
       // console.debug(JSON.stringify(discussions))
       const discussions = resp.discussions.map(d => ({...d, course: forum.courseObj}))
-      newe3Cache.update({discussions: [...get(newe3Cache).discussions, ...discussions]})
+      newDiscussions = [...newDiscussions, ...discussions]
       return resp.discussions
     }
 
     const cIDs = _courseIDs ?? get(courseIDs)
     console.debug('Getting announcements...')
-    newe3Cache.update({discussions:[]})
+    // newe3Cache.update({discussions:[]})
     const resp = await e3NetworkApi(
         'mod_forum_get_forums_by_courses',
         {courseids: cIDs},
-        function (forums) {
+        async function (forums) {
           forums = forums.map( f => ({...f, courseObj: get(derivedNameCourses).find(c => c.id === f.course)}))
-          forums.filter(f => f.intro === '一般消息與公告').forEach(f => _getAnnouncements(f))
           newe3Cache.update({forums})
+          await Promise.all(forums.filter(f => f.type === 'news' && f.courseObj.shortname.includes('1092')).map(f => _getAnnouncements(f)))
+          newe3Cache.update({discussions: newDiscussions})
         })
 
     return resp
