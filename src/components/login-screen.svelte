@@ -29,11 +29,21 @@
               i.f7-icons.person(slot="media").opacity-60 lock
           Button(fill onClick="{login}").mx-4.mt-8
             h2 登入
-          Button(fill onClick="{f7.loginScreen.close}").mx-4.mt-2
+          Button(raised onClick="{f7.loginScreen.close}").mx-4.mt-2
             h2 不登入預覽App
+          Block
+            Row
+              Col(width="20")
+                Link(href="https://www.facebook.com/NiceCourseToU" external target="_blank")
+                  img(src="https://i.imgur.com/jJ3wd5t.png" alt="NiceCourseToU-LOGO").w-full
+              Col(width="80")
+                p #[b NCTU (NɪᴄᴇCᴏᴜʀꜱᴇTᴏU)] 團隊精心打造。
+                p 透過#[b ME₃GA]，在手機上輕鬆存取課程資訊。
+                p 不再輸入密碼與驗證碼，向NewE3說再見。
 
-        Tab(id="token-login")
+        Tab#token-login
           List(form inset noHairlinesMd onSubmit="{tokenLogin}").pt-16.space-y-4
+            ListItem(header="僅供登入後取得存取代碼登入，第一次使用請使用密碼")
             ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
               i.f7-icons.person(slot="media").opacity-60 person
             ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='存取代碼' bind:value='{password}' clearButton)
@@ -41,15 +51,6 @@
           Button(fill onClick="{tokenLogin}").mx-4.mt-8
             h2 以存取代碼登入
         //i.f7-icons.person paperplane
-      Block
-        Row
-          Col(width="20")
-            Link(href="https://www.facebook.com/NiceCourseToU" external target="_blank")
-              img(src="https://i.imgur.com/jJ3wd5t.png" alt="NiceCourseToU-LOGO").w-full
-          Col(width="80")
-            p 由NɪᴄᴇCᴏᴜʀꜱᴇTᴏU團隊精心打造。
-            p 透過ME₃GA，在手機上輕鬆存取課程新訊息。
-            p 無須重新登入，從此拋開把你登出的NewE3。
 </template>
 <script>
 import {onMount} from 'svelte';
