@@ -204,7 +204,7 @@ class E3Api {
             ]
           })
           homeworks = homeworks
-              .sort((l, r) => l.duedate - r.duedate)
+              .sort((l, r) => l.duedate??0 - r.duedate??0)
           newe3Cache.update({homeworks})
         })
 
