@@ -13,11 +13,11 @@
     .h-screen
       LoginScreenTitle.px-4.h-48.pt-16.text-align-left.font-serif
         +if('showing === true')
-          div(transition:slide="{transitionParam}")
-            h1 Make
-            h1 E₃
-            h1 Great
-            h1 Again
+          div
+            h1(transition:slide="{{...transitionParam, delay:3000}}") Make
+            h1(transition:slide="{{...transitionParam, delay:3400}}") E₃
+            h1(transition:slide="{{...transitionParam, delay:3800}}") Great
+            h1(transition:slide="{{...transitionParam, delay:4400, duration:3500}}") Again
             .w-24.h-1.bg-black
 
       Tabs
@@ -74,7 +74,7 @@ import {e3ID} from "../js/store/userInfo.svelte";
 let username = '';
 let password = '';
 let showing = false;
-const transitionParam = {delay: 1000, duration: 1200, easing: quintOut}
+const transitionParam = {delay: 3000, duration: 2000, easing: cubicOut}
 
 onMount(onShow)
 
