@@ -10,17 +10,20 @@
             h4 {'日一二三四五六'[d.getDay()]}
     tbody
       +each('homeworks as h')
-        tr.overflow-x-visible.overflow-y-hidden.truncate
-          td(width="0").sticky.left-4.z-10.shadow-2xl
-            p.font-bold
-              span
-                span.text-xs 剩
-                span.font-serif {getDaysLeft(h)}
-                span.text-xs 天
-              span  | {h.name}
-            p.text-xs - {h.courseName} ~{ date.format(new Date(h.duedate*1000-1), 'M/D') }
-          td(colspan="{ getDaysLeft(h) }").border-r-2
-            .rounded.shadow-2xl.m-1.p-1.h-12.bg-blue-100
+        tr.overflow-x-visible.overflow-y-hidden.truncate.border-b.ml-2
+          td(width="{0}").sticky.left-0.px-4.z-20.bg-gray-100
+            p.text-md.text-gray-900.font-bold.align-top {h.name}
+            p.text-xs.text-gray-700.align-bottom {h.courseName} ~{ date.format(new Date(h.duedate*1000-1), 'M/D') }
+          +each('[...Array(getDaysLeft(h)).keys()] as d')
+            td(colspan="1")
+              div.rounded-lg.shadow.my-2.h-12.bg-blue-200
+
+          td(colspan="{ 120-getDaysLeft(h) }")
+          td(colspan="1").sticky.right-16.z-10.bg-opacity-0
+            span.bg-opacity-0.text-right
+              span.text-xs.align-bottom.text-gray-700 還有
+              span.text-2xl.font-serif {getDaysLeft(h)}
+              span.text-xs.align-bottom.text-gray-700   天
 </template>
 <script>
 import {BlockTitle, Block} from 'framework7-svelte'
