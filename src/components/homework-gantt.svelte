@@ -29,14 +29,14 @@ import date from 'date-and-time'
 
 import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
 
-
-var dates = [...Array(120).keys()].map((i) => date.addDays(new Date(), i))
+const daysLeft = 120
+var dates = [...Array(daysLeft).keys()].map((i) => date.addDays(new Date(), i))
 const today = new Date()
-const colWidth = 40
+const colWidth = 48
 const tableWidthString = `${colWidth}px`
 const semester = '1091'
 $: homeworks = ($newe3Cache.homeworks??[]).filter(
-    h => h.course.shortname.includes($newe3UserConfig.semester+'.')
+    h => h.course.shortname.includes($newe3UserConfig.semester+'.') && h.duedate * 1000 > Date.now()
 ).sort((a,b) => a.duedate - b.duedate)
 
 function getDaysLeft(homework){
