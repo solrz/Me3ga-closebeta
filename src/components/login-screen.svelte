@@ -1,17 +1,19 @@
 <!-- Views/Tabs container -->
 <template lang="pug">
   Page(loginScreen onPageInit="{onShow}").bg-gray-50
-    Navbar
+    Navbar(title="Let's ME₃GA!")
       div(slot="left")
         Button(round onClick="{f7.loginScreen.close}")
           Icon(f7="xmark", size="24px")
 
     Subnavbar
       Segmented(raised)
-        Button(tabLinkActive tabLink="#normal-login") 密碼登入
-        Button(tabLink="#token-login") 使用存取代碼登入
-    .h-screen
-      LoginScreenTitle.px-4.h-48.pt-16.text-align-left.font-serif
+        +if('!window.matchMedia(\'(display-mode: standalone)\').matches')
+          Button(tabLinkActive tabLink="#how-to-install") 安裝App
+        Button( tabLink="#normal-login") 密碼登入
+        Button(tabLink="#token-login") 存取代碼登入
+    div
+      LoginScreenTitle.px-4.h-48.text-align-left.font-serif
         +if('showing === true')
           div
             h1(transition:slide="{{...transitionParam, delay:3000}}") Make
@@ -20,9 +22,12 @@
             h1(transition:slide="{{...transitionParam, delay:4400, duration:3500}}") Again
             .w-24.h-1.bg-black
 
-      Tabs
-        Tab(tabActive id="normal-login")
-          List(form inset noHairlinesMd onSubmit="{login}").pt-16.space-y-4
+      Tabs(animated="{true}")
+        +if('!window.matchMedia(\'(display-mode: standalone)\').matches')
+          Tab#how-to-install(tabActive)
+            img(alt="How to install MEGA" src="https://i.imgur.com/nRjJFrP.jpg")
+        Tab#normal-login
+          List(form inset noHairlinesMd onSubmit="{login}").pt-8.space-y-4
             ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
               i.f7-icons.person(slot="media").opacity-60 person
             ListInput(type='password' tabindex="2" autocomplete="current-password" placeholder='單一入口密碼' bind:value='{password}' clearButton)
@@ -55,7 +60,7 @@
 <script>
 import {onMount} from 'svelte';
 import {slide,} from 'svelte/transition'
-import {quintOut,} from 'svelte/easing'
+import {cubicOut} from 'svelte/easing'
 import {newe3Config, newe3Cache} from '../js/store/e3Store.js';
 import {
   f7,
@@ -64,7 +69,7 @@ import {
   Page, Card,
   LoginScreen, LoginScreenTitle,
   List, ListInput, ListButton,
-  Block,
+  Block, ListItem,
   Button, Icon, Row, Col,
   Swiper, SwiperSlide, Navbar, Subnavbar,
   Tab, Tabs, Segmented
@@ -72,7 +77,7 @@ import {
 import {e3api} from "../js/api/e3Api";
 import {e3ID} from "../js/store/userInfo.svelte";
 
-let username = '';
+let username = $newe3Config.token ? $newe3Config.studentID : '';
 let password = '';
 let showing = false;
 const transitionParam = {delay: 3000, duration: 2000, easing: cubicOut}
@@ -102,7 +107,7 @@ async function login() {
   f7.dialog.close();
   if (!loginInfo) {
     f7.toast.create({
-      text: "登入失敗QQ。\n若您已經重新陽交註冊單一入口，且確定密碼正確，是因為學校設定特別擋住了你的登入。\n此時不用擔心，請隔4小時回來重試就好。",
+      text: "登入失敗QQ。\n若您已經重新陽交註冊單一入口，且確定密碼正確，是因為學校設定特別擋住了你的登入。\n此時不用擔心，請隔2小時後回來重試就好。",
       closeTimeout: 8000
     }).open()
   }
@@ -112,6 +117,7 @@ async function login() {
     $newe3Config.token = loginInfo.token
     e3api.refreshCache(loginInfo.token, loginInfo.e3ID)
     f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
+    password = ''
     f7.loginScreen.close()
   }
 }
