@@ -2,10 +2,12 @@
   table(width="{tableWidthString}" style="table-layout: fixed").overflow-scroll.min-w-full.h-min-16.h-max-40
     thead
       tr
-        th(width="0")
+        th(width="{0}").sticky.left-0.p-4.z-20.bg-gray-100
         +each('dates as d')
-          th(width="{tableWidthString}").border-r-2.z-50.bg-gray-100.shadow-xl.text-align-left.font-serif.sticky.top-0
-            h4 {d.getDate()}
+          th(width="{tableWidthString}"
+            class="{[0,6].includes(d.getDay()) ? 'text-red-500':'text-gray-700'} {d.getDay() === 0 ? 'rounded-br-lg mr-2': 'border-r'} {d.getDay() === 1 ? 'rounded-bl-lg ml-2': ''}").bg-gray-200.z-10.shadow-xl.sticky.top-0
+            h4 {d.getDate()===1?`${d.getMonth()+1}/`:''}{d.getDate()}
+            h4 {'日一二三四五六'[d.getDay()]}
     tbody
       +each('homeworks as h')
         tr.overflow-x-visible.overflow-y-hidden.truncate
