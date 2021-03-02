@@ -30,7 +30,7 @@ import {newe3Config, newe3Cache, newe3UserConfig} from '../js/store/e3Store.js';
 export let filter = (h) => true
 $: homeworks = ($newe3Cache.homeworks ?? []).filter(
     filter
-).sort((a,b) => b.duedate - a.duedate)
+).sort((a,b) => a.duedate - b.duedate)
 function onSelect(homework) {
   $newe3UserConfig.readHomeworks = [...$newe3UserConfig.readHomeworks, homework.id]
   // f7.panel.open("#panel-nested", true)
