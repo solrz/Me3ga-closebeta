@@ -1,5 +1,5 @@
 <template lang="pug">
-  Searchbar(
+  Searchbar(type="text"
     searchContainer=".members-list"
     searchIn=".item-title")
 
@@ -15,7 +15,7 @@
                 title="{m.fullname.split(' ').pop()}"
                 subtitle="{getDep(m)}"
                 text="{getMemberRoles(m)}")
-                img(slot="media" src="{m.profileimageurlsmall}" width="48").rounded-full
+                img(alt="avatar" slot="media" src="{m.profileimageurlsmall}" width="48").rounded-full
       +catch('err')
         BlockTitle(large) 出錯了！請稍後再試
         Block {err}
