@@ -7,12 +7,13 @@
           title="{h.name}",
           footer="{`至 ${date.format(new Date(h.duedate*1000-1), 'M/D hh:mm')} 截止`}")
           AccordionContent
-            Block.bg-gray-50.rounded() {@html h.intro.length !== 0 ? h.intro : '作業規定要自己腦補啊，怎麼會叫老師想呢？'}
-            +each('h.introattachments as a')
-              ListItem
-                Link(href="{a.fileurl.replace('forcedownload=1','')}token={$newe3Config.token}"
-                  external target="_blank").w-full {a.filename}
-                i.f7-icons.person(slot="media").opacity-60 doc_fill
+            Block.bg-gray-100.rounded.break-words
+              |{@html (h.intro??'').length !== 0 ? h.intro.replace('<a href','<a class="link external" external="true" target="_blank" href') : '作業規定要自己腦補啊，怎麼會叫老師想呢？'}
+              +each('h.introattachments??[] as a')
+                ListItem.bg-gray-50
+                  Link(href="{a.fileurl.replace('forcedownload=1','')}?token={$newe3Config.token}"
+                    external target="_blank").text-center.w-full {a.filename}
+                  i.f7-icons.person(slot="media").opacity-60 doc_fill
           div(slot="after")
             +if('!$newe3UserConfig.readHomeworks.includes(h.id)')
               span(transition:scale).badge.color-red new
