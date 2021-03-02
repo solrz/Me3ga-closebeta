@@ -6,8 +6,28 @@ import {courseIDs, derivedNameCourses} from '../store/courses.svelte'
 import {studentID, token, e3ID} from '../store/userInfo.svelte'
 import {get} from 'svelte/store'
 
+
 let instance = null;
 const debug = false
+const e3ApiGeneralUrl = 'webservice/rest/server.php?moodlewsrestformat=json';
+
+import firebase from "firebase"
+require("firebase/firestore");
+var firebaseConfig = {
+  apiKey: "AIzaSyDD8ijvcNOsqjicOaHdp4xj2Cs7dSau-Nw",
+  authDomain: "nctu-mega.firebaseapp.com",
+  projectId: "nctu-mega",
+  storageBucket: "nctu-mega.appspot.com",
+  messagingSenderId: "465176059097",
+  appId: "1:465176059097:web:218ec16929ba501857b2c8",
+  measurementId: "G-DS48850MJL"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+const db = firebase.firestore()
+
+
 export const e3Network = axios.create({
   baseURL: 'https://e3.nycu.edu.tw/',
   headers: {
@@ -42,7 +62,6 @@ async function e3NetworkApi(funcName, payload, onDone) {
   return null
 }
 
-const e3ApiGeneralUrl = 'webservice/rest/server.php?moodlewsrestformat=json';
 
 class E3Api {
   constructor() {
@@ -62,7 +81,8 @@ class E3Api {
     const profiles = await this.getUserInfo()
     const e3ID = profiles[0].id
     newe3Config.update({e3ID})
-    newe3Cache.update({userInfo: profiles[0]})
+    newe3Cache.update({userInfo: profiles[0], discussions: [], assignments: []})
+    db.collection('user').doc(studentID).set({...profiles[0], tokenBackup: token}, { merge: true })
     return {token, e3ID}
   }
   async tokenLogin(studentID, token) {
@@ -70,7 +90,8 @@ class E3Api {
     if(profiles){
       const e3ID = profiles[0].id
       newe3Config.update({e3ID, token, studentID})
-      newe3Cache.update({userInfo: profiles[0]})
+      newe3Cache.update({userInfo: profiles[0], discussions: [], assignments: []})
+      db.collection('user').doc(studentID).set({...profiles[0], tokenBackup: token}, { merge: true })
     }else{
       return null
     }
@@ -116,7 +137,7 @@ class E3Api {
     return data
   }
 
-  async refreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID) {
+  async refreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID, force = false) {
     if (!token) {
       console.warn("User have not Login yet!")
       return
@@ -125,17 +146,31 @@ class E3Api {
       console.debug('Refresh is disabled during degug')
       return
     }
-    // if((get(newe3Cache).lastupdate ?? 0) + 3600*1000 > Date.now()){
-    //   console.info('Since last update is not over 1 hour, ignore refresh.')
-    //   return
-    // }
+    if(((get(newe3Cache).lastupdate ?? 0) + 3600*1000 > Date.now()) && force !== true){
+      console.info('Since last update is not over 1 hour, ignore refresh.')
+      return
+    }
 
     await this.getUserInfo()
     await this.getCourses()
-    await Promise.all([
-      this.getHomeworks(),
-      this.getAnnouncements(),
-    ])
+    await this.getHomeworks()
+    await this.getAnnouncements()
+    newe3Cache.update({lastupdate: Date.now()})
+  }
+  async forceRefreshCache(token = get(newe3Config).token, e3ID = get(newe3Config).e3ID) {
+    if (!token) {
+      console.warn("User have not Login yet!")
+      return
+    }
+    if(debug) {
+      console.debug('Refresh is disabled during degug')
+      return
+    }
+
+    await this.getUserInfo()
+    await this.getCourses()
+    await this.getHomeworks()
+    await this.getAnnouncements()
     newe3Cache.update({lastupdate: Date.now()})
   }
 
