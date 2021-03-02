@@ -12,6 +12,9 @@
       ListItem
         span 顯示週末
         Toggle(bind:checked="{showWeekend}")
+      ListItem
+        span 顯示星期代碼
+        Toggle(bind:checked="{showWeekday}")
       //ListItem
       //  span 顯示不在e3上的課程
       //  Toggle(bind:checked="{displayNonE3Courses}")
@@ -34,7 +37,10 @@
         +each('weekdaysShort as d')
           SwiperSlide(class="w-1/{weekdayPerPage}")
             Col
-              #weekday-header.shadow-lg.h-6.text-align-center.bg-blue-50.font-bold {chineseWeekdays[weekdaysShort.indexOf(d)]}
+              #weekday-header.shadow-lg.h-6.text-align-center.bg-blue-100
+                span.font-bold {chineseWeekdays[weekdaysShort.indexOf(d)]}
+                +if('showWeekday')
+                  span.text-gray-600  ({weekdaysShort[weekdaysShort.indexOf(d)]})
               +each('timeslotShort as s')
                 +if('coursesOnTable[d+s]')
                   .absolute.opacity-40.h-12.w-full(class="{'yzn9'.includes(s)?'bg-gray-400':''}")
@@ -70,9 +76,10 @@ import {courses} from '../js/store/courses.svelte'
 import * as courseTimeLookup from '../assets/1092-time.json'
 const coverflowEff = {rotate:15,stretch:0,depth:20,modifier:1,slideShadows:false}
 
-const showingTimeslotRange = {f:2, t:2+13}
+const showingTimeslotRange = {f:1, t:2+13}
 let globalUseClassicTimeslot = true
 let showWeekend = false
+let showWeekday = false
 let timetableExpanded = false
 let displayNonE3Courses = true
 let importCourses = ''
