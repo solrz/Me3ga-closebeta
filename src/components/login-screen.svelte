@@ -25,7 +25,7 @@
       Tabs(animated="{true}")
         +if('!window.matchMedia(\'(display-mode: standalone)\').matches')
           Tab#how-to-install(tabActive)
-            img(alt="How to install MEGA" src="https://i.imgur.com/nRjJFrP.jpg")
+            img(alt="How to install MEGA" src="https://i.imgur.com/nRjJFrP.jpg" class="w-5/6").mx-auto
         Tab#normal-login
           List(form inset noHairlinesMd onSubmit="{login}").pt-8.space-y-4
             ListInput(type='email' tabindex="1" autocomplete="username" placeholder='學號'  bind:value='{username}' clearButton)
