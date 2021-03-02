@@ -140,6 +140,7 @@ async function tokenLogin() {
     $newe3Config.e3ID = loginInfo.e3ID
     $newe3Config.studentID = username
     e3api.refreshCache(password, loginInfo.e3ID)
+    password = ''
     f7.toast.create({text: "登入成功！", closeTimeout: 3000}).open()
     f7.loginScreen.close()
   }
