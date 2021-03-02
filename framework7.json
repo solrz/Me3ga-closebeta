@@ -14,7 +14,7 @@
     "productionSourceMap": true,
     "hashAssets": false,
     "preserveAssetsPaths": false,
-    "inlineAssets": true
+    "inlineAssets": false
   },
   "theming": {
     "customColor": true,
