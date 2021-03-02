@@ -30,14 +30,16 @@ import AnnouncementList from '../components/announcements-view.svelte'
 import HomeworkGantt from '../components/homework-gantt.svelte'
 import TodaySummary from '../components/today-summary.svelte'
 
+import {e3api} from "../js/api/e3Api";
 let componentOfOneDayCoursesGantt, componentOfHomeworkGantt, componentOfAnnouncementList;
 $: semester = $newe3UserConfig.semester
 
-function refresh(done) {
+export function refresh(done) {
+  e3api.forceRefreshCache()
   Promise.all([
-    componentOfOneDayCoursesGantt.getCourses(),
-    componentOfHomeworkGantt.getHomeworks(),
-    componentOfAnnouncementList.getForums()
+    // componentOfOneDayCoursesGantt.getCourses(),
+    // componentOfHomeworkGantt.getHomeworks(),
+    componentOfAnnouncementList.refresh()
   ]).then(() => done())
 }
 </script>
