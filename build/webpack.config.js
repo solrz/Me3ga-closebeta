@@ -40,7 +40,7 @@ module.exports = {
     },
     mainFields: ['svelte', 'browser', 'module', 'main']
   },
-  devtool: env === 'production' ? 'source-map' : 'eval',
+  devtool: production ? 'source-map' : 'eval',
   devServer: {
     hot: true,
     open: false,
@@ -196,7 +196,7 @@ module.exports = {
       filename: './index.html',
       template: './src/index.html',
       inject: true,
-      minify: env === 'production' ? {
+      minify: production ? {
         collapseWhitespace: true,
         removeComments: true,
         removeRedundantAttributes: true,
